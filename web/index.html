@@ -38,11 +38,31 @@
                 <p>Sender: {{ mailbox.currentMail.sender }}</p>
               </div>
               <div class='col-xs-3 col-xs-offset-6'>
-                <p>{{ mailbox.currentMail.timestamp }}</p>
+                <p>{{ mailbox.currentMail.date | date }}</p>
               </div>
             </div>
             <div class='row'>
-              content
+              <div class='col-xs-6'>
+                History:
+                <ul>
+                  <li ng-repeat='history in mailbox.currentMail.history'>
+                    <div class='row'>
+                      <div class='col-xs-8'>
+                        {{ history.text }}
+                      </div>
+                      <div class='col-xs-2 col xs-offset-2'>
+                        {{ history.status }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class='col-xs-6'>
+                <p>Action1</p>
+                <p>Action2</p>
+                <p>Action3</p>
+                <p>Action4</p>
+              </div>
             </div>
           </div>
         </div>

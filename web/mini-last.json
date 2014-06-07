@@ -1,17 +1,53 @@
 [{
 	"sender": "Louis",
 	"receiver": "Quentin",
-	"date": "27 Janvier 2042"
+	"date": "27 Janvier 2042",
+	"history": [{
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}, {
+		"text": "pas arrivé",
+		"status": "aux putes"
+	}]
 }, {
 	"sender": "Romain",
 	"receiver": "Quentin",
-	"date": "27 Janvier 2042"
+	"date": "27 Janvier 2042",
+	"history": [{
+		"text": "vas te faire enculer très profond",
+		"status": "aux putes"
+	}, {
+		"text": "toi aussi",
+		"status": "aux putes"
+	}]
 }, {
 	"sender": "Julien",
 	"receiver": "Quentin",
-	"date": "27 Janvier 2042"
+	"date": "27 Janvier 2042",
+	"history": [{
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}]
 }, {
 	"sender": "Cyril",
 	"receiver": "Quentin",
-	"date": "27 Janvier 2042"
+	"date": "27 Janvier 2042",
+	"history": [{
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}, {
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}]
+}, {
+	"sender": "Cyril",
+	"receiver": "Quentin",
+	"date": "27 Janvier 2042",
+	"history": [{
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}, {
+		"text": "vas te faire enculer",
+		"status": "aux putes"
+	}]
 }]

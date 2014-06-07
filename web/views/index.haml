@@ -32,9 +32,23 @@
                 %p Receiver: {{ mailbox.currentMail.receiver }}
                 %p Sender: {{ mailbox.currentMail.sender }}
               .col-xs-3.col-xs-offset-6
-                %p {{ mailbox.currentMail.timestamp }}
+                %p {{ mailbox.currentMail.date | date }}
             .row
-              content
+              .col-xs-6
+                History:
+                %ul
+                  %li{"ng-repeat" => "history in mailbox.currentMail.history"}
+                    .row
+                      .col-xs-8
+                        {{ history.text }}
+                      .col-xs-2.col.xs-offset-2
+                        {{ history.status }}
+              .col-xs-6
+                %p Action1
+                %p Action2
+                %p Action3
+                %p Action4
+
 
       %script{:src => "js/angular.min.js", :type=>"text/javascript"}
       %script{:src => "js/main.js", :type=>"text/javascript"}
