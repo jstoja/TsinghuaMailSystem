@@ -22,3 +22,4 @@ end
 # haml_options: { ugly: true }    pass options to the Haml engine
 
 guard :haml, input: 'views'
+guard :compass
