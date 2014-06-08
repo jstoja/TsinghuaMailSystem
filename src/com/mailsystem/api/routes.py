@@ -30,12 +30,12 @@ def get_user_mails(id):
 
 
 @app.route('/mail/update/:id', method='POST')
-def update_mail(id):
+def update_mail():
     pass
 
 
 @app.route('/mail', method='POST')
-def create_mail(id):
+def create_mail():
     pass
 
 
@@ -47,14 +47,12 @@ def get_user(id):
 
 
 @app.route('/user/update/:id', method='POST')
-def update_user(id):
+def update_user():
     pass
 
 
 @app.route('/user', method='POST')
-def create_user(id):
-    body = request.body
-    print body
+def create_user():
     name = request.forms.get('name')
     email = request.forms.get('email')
     address = request.forms.get('address')
@@ -74,10 +72,10 @@ def get_all_deps():
 
 
 @app.route('/dep/update/:id', method='POST')
-def update_dep(id):
+def update_dep():
     pass
 
 
 @app.route('/dep', method='POST')
-def create_dep(id):
+def create_dep():
     pass
