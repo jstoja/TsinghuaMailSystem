@@ -22,15 +22,13 @@ states = [
     State(name = "Received")
 ]
         
-# chinese_names = [
-#     "张伟", "王伟","王芳","李伟","王秀英","李秀英","李娜","张秀英","刘伟","张敏",
-#     "李静","张丽","王静","王丽","李强","张静","李敏","王敏","王磊","李军","刘洋",
-#     "王勇","张勇","王艳","李杰","张磊","王强","王军","张杰","李娟","张艳","张涛",
-#     "王涛","李明","李艳","王超","李勇","王娟","刘杰","王秀兰","李霞","刘敏","张军",
-#     "李丽","张强","王平","王刚","王杰","李桂英","刘芳"
-# ] 
-
-chinese_names = ["lina","mia","lifei","hefei"]
+chinese_names = [
+    "张伟", "王伟","王芳","李伟","王秀英","李秀英","李娜","张秀英","刘伟","张敏",
+    "李静","张丽","王静","王丽","李强","张静","李敏","王敏","王磊","李军","刘洋",
+    "王勇","张勇","王艳","李杰","张磊","王强","王军","张杰","李娟","张艳","张涛",
+    "王涛","李明","李艳","王超","李勇","王娟","刘杰","王秀兰","李霞","刘敏","张军",
+    "李丽","张强","王平","王刚","王杰","李桂英","刘芳"
+] 
 
 adresses = [
     Address(name="Zijing 1"), 
@@ -68,7 +66,6 @@ adresses = [
     Address(name="Lab of ADM")
 ]
 
-
 db_users = Database('thumailusers', 'thumail', 'thumail', 'localhost', 5432)
 s = db_users.session()
 for adress in adresses:
@@ -84,5 +81,6 @@ for department in departments:
         s.add(u)
         for adress in adresses:
             s.add(UserAddress(address=adress, user=u))
+
 s.commit()
 print "Finish"
