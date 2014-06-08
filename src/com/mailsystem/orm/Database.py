@@ -19,13 +19,12 @@ class Database:
         self.recovering = False
         self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
 
-        self.engine = create_engine('sqlite:///' + name, encoding='utf8')
-        #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port))
+        self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port))
         try:
             self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
         except:
             pass
-        #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, encoding='utf8')
+        self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, encoding='utf8')
 
         #self.engine = create_engine('sqlite:///' + name, encoding='utf8')
 

@@ -26,6 +26,10 @@ class MailService:
         return databases[ua.user.department.name]
     
     @staticmethod
+    def __findDatabaseForBarcode(databases, codes, barcode):
+        return databases[codes[barcode.split('-')[0]]]
+    
+    @staticmethod
     def __genBarcode(database_id):
         return (str(database_id) + "-" + str(uuid.uuid4()))
     
@@ -57,8 +61,8 @@ class MailService:
         return generatedBarcode
     
     @staticmethod
-    def update(databases, idsenderua, barcode, idstate):
-        db_sender = MailService.__findDatabaseForUserAddress(databases, idsenderua)
+    def update(databases, codes, barcode, idstate):
+        db_sender = MailService.__findDatabaseForBarcode(databases, codes, barcode)
         if db_sender is None:
             return None
         
@@ -66,8 +70,9 @@ class MailService:
         if currentMail is None:
             return None
         
+        db_sender = MailService.__findDatabaseForUserAddress(databases, currentMail.idsenderuseraddress)
         db_receiver = MailService.__findDatabaseForUserAddress(databases, currentMail.idreceiveruseraddress)
-        if db_receiver is None:
+        if db_sender is None or db_receiver is None:
             return None
         
         updateStatement = db_sender.statement(Mail, "update")\
@@ -75,5 +80,7 @@ class MailService:
                                     .values(idstate = idstate)
         MailStateHistoryService.add(db_sender, currentMail.idstate, currentMail.idmail)
         r1 = db_sender.execute(updateStatement)
+        if db_sender == db_receiver:
+            return r1 is not None
         r2 = db_receiver.execute(updateStatement)
         return r1 is not None and r2 is not None
