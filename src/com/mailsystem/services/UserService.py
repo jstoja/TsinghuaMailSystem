@@ -22,9 +22,9 @@ class UserService:
         return -1
 
     @staticmethod
-    def update(db_users, iduserthu, name, email, iddepartment):
+    def update(db_users, studentnumber, name, email, iddepartment):
         updateStatement = db_users.statement(User, "update")\
-                                    .where(User.__table__.c.iduserthu == iduserthu)\
+                                    .where(User.__table__.c.studentnumber == studentnumber)\
                                     .values(name = name,
                                             email = email,
                                             iddepartment = iddepartment)

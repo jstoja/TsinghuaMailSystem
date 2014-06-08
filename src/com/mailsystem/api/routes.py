@@ -6,6 +6,7 @@ from json import dumps
 from bottle import static_file, response, Bottle, request, hook
 from src.com.mailsystem.services.DepartmentService import DepartmentService
 from src.com.mailsystem.services.UserService import UserService
+from src.com.mailsystem.services.MailService import MailService
 
 
 app = Bottle()
@@ -27,9 +28,31 @@ def server_static():
     return static_file("mini-last.json", root='./data')
 
 
-@app.route('/mail/:id')
+@app.route('/mail/:id:int')
 def get_mail(id):
-    pass
+    # TODO: besoin de savoir dans quelle db est le mail
+    mail = MailService.selectById(app.dbs['LAW'], id)
+    m = {
+        'barcode': mail.barcode,
+        'Sender': mail.idsenderuseraddress,
+        'Receiver': mail.idreceiveruseraddress,
+        'State': mail.idstate
+    }
+    return m
+
+
+@app.route('/mail/:barcode')
+def get_mail_barcode(barcode):
+    # TODO: besoin de savoir dans quelle db est le mail
+    mail = MailService.selectById(app.dbs['LAW'], id)
+    m = {
+        'barcode': mail.barcode,
+        'Sender': mail.idsenderuseraddress,
+        'Receiver': mail.idreceiveruseraddress,
+        'State': mail.idstate
+    }
+    return m
+
 
 
 @app.route('/mail/dep/:id')
@@ -60,6 +83,7 @@ def get_all_users():
     us = []
     for user in users:
         u = {'name': user.name, 'email': user.email,
+             'studentnumber': user.studentnumber,
              'department': user.iddepartment}
         us.append(u)
     response.content_type = 'text/json; charset=utf-8'
@@ -69,11 +93,10 @@ def get_all_users():
 @app.route('/user/:id')
 def get_user(id):
     user = UserService.selectById(app.dbs['users'], id)
-    print user.name, user.email, user.iddepartment
-    print user
     if user is None:
-        return ""
+        return "{}"
     u = {'name': user.name, 'email': user.email,
+         'studentnumber': user.studentnumber,
          'department': user.iddepartment}
     response.content_type = 'text/json; charset=utf-8'
     return dumps(u)
@@ -100,8 +123,9 @@ def create_user():
     name = request.forms.get('name')
     email = request.forms.get('email')
     department = request.forms.get('department')
+    studentnumber = request.forms.get('studentnumber')
     print name, email, department
-    UserService.add(app.dbs['users'], name, email, department)
+    UserService.add(app.dbs['users'], studentnumber, name, email, department)
 
 
 @app.route('/dep/:id')

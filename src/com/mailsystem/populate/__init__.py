@@ -10,12 +10,11 @@ Created on 8 juin 2014
 from datetime import date
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
-from mercurial.revset import destination
 from src.com.mailsystem.services.UserService import UserService
 from src.com.mailsystem.services.AddressService import AddressService
 from src.com.mailsystem.services.DepartmentService import DepartmentService
-from src.com.mailsystem.services.UserAddressService import UserAddressService 
-from src.com.mailsystem.services.StateService import StateService 
+from src.com.mailsystem.services.UserAddressService import UserAddressService
+from src.com.mailsystem.services.StateService import StateService
 from src.com.mailsystem.services.MailService import MailService
 
 departments = [
