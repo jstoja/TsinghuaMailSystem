@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, func
+from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, Sequence, func
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -6,14 +6,14 @@ Base = declarative_base()
 
 class Department(Base):
     __tablename__ = 'department'
-    idDepartment = Column(Integer, primary_key=True)
-    name = Column(String)
+    idDepartment = Column(Integer, Sequence('department_id_seq'), primary_key=True)
+    name = Column(String(64))
 
 class User(Base):
     __tablename__ = 'user'
-    idUser = Column(Integer, primary_key=True)
-    name = Column(String)
-    email = Column(String)
+    idUser = Column(Integer, Sequence('user_id_seq'), primary_key=True)
+    name = Column(String(64))
+    email = Column(String(128))
     idDepartment = Column(Integer, ForeignKey('department.idDepartment'))
     department = relationship(Department,
                               backref=backref('users',
@@ -22,29 +22,29 @@ class User(Base):
 
 class Address(Base):
     __tablename__ = 'address'
-    idAddress = Column(Integer, primary_key=True)
-    name = Column(String)
+    idAddress = Column(Integer, Sequence('address_id_seq'), primary_key=True)
+    name = Column(String(256))
 
 class UserAddress(Base):
     __tablename__ = 'userAddress'
-    idUserAddress = Column(Integer, primary_key=True)
+    idUserAddress = Column(Integer, Sequence('user_address_id_seq'), primary_key=True)
     idAddress = Column(Integer, ForeignKey('address.idAddress'))
     address = relationship(Address,
-                           backref=backref('addressses',
+                           backref=backref('addresses',
                                            uselist=True))
     idUser= Column(Integer, ForeignKey('user.idUser'))
     user = relationship(User,
-                        backref=backref('addressses',
+                        backref=backref('addresses',
                                         uselist=True))
  
 class State(Base):
     __tablename__ = 'state'
-    idState = Column(Integer, primary_key=True)
-    name = Column(String)
+    idState = Column(Integer, Sequence('state_id_seq'), primary_key=True)
+    name = Column(String(64))
 
 class Mail(Base):
     __tablename__ = 'mail'
-    idMail = Column(Integer, primary_key=True)
+    idMail = Column(Integer, Sequence('mail_id_seq'), primary_key=True)
     idState = Column(Integer, ForeignKey('state.idState'))
     state = relationship(State)
     idDestinationUserAddress = Column(Integer, ForeignKey('userAddress.idUserAddress'))
@@ -63,10 +63,7 @@ class MailStateHistory(Base):
                                         cascade="all, delete-orphan"))
     date = Column(DateTime, primary_key=True, default=func.now())
 
-from sqlalchemy import create_engine
-engine = create_engine('sqlite:///db1sqlite')
- 
-from sqlalchemy.orm import sessionmaker
-session = sessionmaker()
-session.configure(bind=engine)
-Base.metadata.create_all(engine)
+class Schema:
+    @staticmethod
+    def create(engine):
+        Base.metadata.create_all(engine)
