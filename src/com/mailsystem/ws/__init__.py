@@ -79,11 +79,11 @@ s.add(ua16)
 s.commit()
 '''
 
-d1 = DepartmentService.selectById(db1, 1)
+#d1 = DepartmentService.selectById(db1, 1)
 
 #db1.update(Department, Department.__table__.c.idDepartment == d1.idDepartment, name = "CS")
 #db1.insert(UserAddress, idAddress = 1, idUser = 1)
 #db1.execute(db1.statement(Department, "update").where(Department.__table__.c.idDepartment == d1.idDepartment).values(name = "CS"))
-db1.execute(db1.statement(UserAddress, "insert").values(idAddress = 1, idUser = 1))
+#db1.execute(db1.statement(UserAddress, "insert").values(idaddress = 1, iduser = 1))
 #ins = db1.getStatement(UserAddress, 'insert').values(idAddress = 1, idUser = 1)
 #db1.execute(ins)
