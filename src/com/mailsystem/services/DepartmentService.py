@@ -10,3 +10,7 @@ class DepartmentService:
     @staticmethod
     def listAll(database):
         return database.session().query(Department).all()
+    
+    @staticmethod
+    def selectById(database, id):
+        return database.session().query(Department).get(id)

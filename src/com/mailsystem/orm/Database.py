@@ -5,17 +5,18 @@ Created on 8 juin 2014
 '''
 
 from __future__ import print_function
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory, Schema
-import sys, os, ast
+from src.com.mailsystem.orm import Schema
+import sys, os, ast, re
 
 class Database:
     def __init__(self, name, user = 'root', password = 'root', host = 'localhost', port = 3306):
         self.name = name
         self.logfile = open(name + '.logfile', 'a+')
         self.mustRecover = os.stat(name + '.logfile').st_size > 0
-        self.recoverHandler = { "INSERT": self.insert }
+        self.recovering = False
+        self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
         
         #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False)
         #self.engine = create_engine('sqlite:///' + name, encoding='utf8')
@@ -27,45 +28,49 @@ class Database:
     def session(self):
         return self.session()
 
-    def insert(self, table, **kwargs):
-        statement = table.__table__.insert().values(kwargs)
+    def statement(self, table, func):
+        statement = getattr(table.__table__, func)()
         statement.bind = self.engine
-        
-        try:
-            tablename = str(table).split('\'')[1].split('.')[-1]
-            return self.__execute("INSERT " + tablename, statement)
-        except:
-            return False
+        return statement
     
     def __recover(self):
         try:
+            self.recovering = True
             self.logfile.seek(0)
-            for line in self.logfile:
-                data = line.split(' ', 2)
-                print('Recover statement ' + line)
-                table = getattr(sys.modules[__name__], data[1])
-                mdict = ast.literal_eval(data[2])
-                self.recoverHandler[data[0]](table, **mdict)
+            while True:
+                line1 = self.logfile.readline()
+                line2 = self.logfile.readline()
+                if not line2: break  # EOF
+                print('Recover statement ' + line1 + line2)
+                mdict = ast.literal_eval(line2)
+                s = text(line1)
+                self.execute(s, **mdict)
             self.logfile.truncate(0)
             self.mustRecover = False
+            self.recovering = False
+            print('Successfully recovered \'' + self.name + '\'')
         except:
-            print("Unexpected error:", sys.exc_info()[0])
+            self.mustRecover = True
+            self.recovering = False
+            print("Failed recovery of \'' + self.name + '\': ", sys.exc_info()[0], " - ", sys.exc_info()[1])
             pass
         
-    def __execute(self, tolog, statement):
-        if self.mustRecover:
+    def execute(self, statement, **kwargs):
+        if self.mustRecover and self.recovering == False:
             self.__recover()
             if self.mustRecover:
                 return False
         try:
-            raise
             conn = self.engine.connect()
-            conn.execute(statement)
+            conn.execute(statement, kwargs)
             conn.close()
             return True
         except:
+            if self.recovering:
+                raise
             #Log
-            print(tolog + " " + str(statement.compile().params), file=self.logfile)
-            print('Execute error on db ' + self.name)
+            print(self.logRegex.sub(r":\1", str(statement)), file=self.logfile)
+            print(str(statement.compile().params), file=self.logfile)
+            print("FAIL: " + self.name + ": " + str(statement) + str(statement.compile().params))
             self.mustRecover = True
             return False    

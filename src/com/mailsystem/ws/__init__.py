@@ -4,9 +4,6 @@ from src.com.mailsystem.services.DepartmentService import DepartmentService
 
 db1 = Database('mailsystem_1')
 
-for d in DepartmentService.listAll(db1):
-    print str(d.idDepartment) + ' ' +  d.name
-
 '''
 d1 = Department(name="CS")
 d2 = Department(name="PHY")
@@ -81,6 +78,12 @@ s.add(ua16)
 
 s.commit()
 '''
+
+d1 = DepartmentService.selectById(db1, 1)
+
+#db1.update(Department, Department.__table__.c.idDepartment == d1.idDepartment, name = "CS")
 #db1.insert(UserAddress, idAddress = 1, idUser = 1)
+#db1.execute(db1.statement(Department, "update").where(Department.__table__.c.idDepartment == d1.idDepartment).values(name = "CS"))
+db1.execute(db1.statement(UserAddress, "insert").values(idAddress = 1, idUser = 1))
 #ins = db1.getStatement(UserAddress, 'insert').values(idAddress = 1, idUser = 1)
 #db1.execute(ins)

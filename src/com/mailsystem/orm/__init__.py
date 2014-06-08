@@ -10,8 +10,8 @@ class Department(Base):
     name = Column(String(64), nullable=False)
 
 class User(Base):
-    __tablename__ = 'user'
-    idUser = Column(Integer, Sequence('user_id_seq'), primary_key=True)
+    __tablename__ = 'userTHU'
+    idUserTHU = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     name = Column(String(64), nullable=False)
     email = Column(String(128), nullable=False)
     idDepartment = Column(Integer, ForeignKey('department.idDepartment'), nullable=False)
@@ -32,7 +32,7 @@ class UserAddress(Base):
     address = relationship(Address,
                            backref=backref('addresses',
                                            uselist=True))
-    idUser= Column(Integer, ForeignKey('user.idUser'), nullable=False)
+    idUser= Column(Integer, ForeignKey('userTHU.idUserTHU'), nullable=False)
     user = relationship(User,
                         backref=backref('addresses',
                                         uselist=True))

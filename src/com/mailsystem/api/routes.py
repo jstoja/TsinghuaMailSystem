@@ -15,28 +15,59 @@ def server_static():
 
 
 @app.route('/mail/:id')
-def server_static2(id):
-    return static_file("mini-last.json", root='./data')
-
-
-@app.route('/sender/:username')
-def sender(username):
+def get_mail(id):
     pass
 
 
-@app.route('/receiver/:username')
-def receiver(username):
+@app.route('/mail/dep/:id')
+def get_dep_mails(id):
     pass
 
 
-@app.route('/mail/:id/update', method='POST')
-def udpate(id):
+@app.route('/mail/user/:id')
+def get_user_mails(id):
     pass
 
 
-@app.route('/mail/new', method='POST')
-def new_mail():
+@app.route('/mail/update/:id', method='POST')
+def update_mail(id):
     pass
+
+
+@app.route('/mail', method='POST')
+def create_mail(id):
+    pass
+
+
+@app.route('/user/:id')
+def get_user(id):
+    pass
+
+
+@app.route('/user/update/:id', method='POST')
+def update_user(id):
+    pass
+
+
+@app.route('/user', method='POST')
+def create_user(id):
+    pass
+
+
+@app.route('/dep/:id')
+def get_dep(id):
+    pass
+
+
+@app.route('/dep/update/:id', method='POST')
+def update_dep(id):
+    pass
+
+
+@app.route('/dep', method='POST')
+def create_dep(id):
+    pass
+
 
 @app.route('/')
 def index():
