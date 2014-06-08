@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from bottle import run, static_file, response, Bottle
-from src.com.mailsystem.orm.Database import Database
+from bottle import static_file, response, Bottle, request
+from src.com.mailsystem.services import DepartmentService, UserService
 
 
 app = Bottle()
@@ -30,27 +30,34 @@ def get_user_mails(id):
 
 
 @app.route('/mail/update/:id', method='POST')
-def update_mail(id):
+def update_mail():
     pass
 
 
 @app.route('/mail', method='POST')
-def create_mail(id):
+def create_mail():
     pass
 
 
 @app.route('/user/:id')
 def get_user(id):
-    pass
+    db = app.dbs['users']
+    UserService.selectById(db, id)
+    return id
 
 
 @app.route('/user/update/:id', method='POST')
-def update_user(id):
+def update_user():
     pass
 
 
 @app.route('/user', method='POST')
-def create_user(id):
+def create_user():
+    name = request.forms.get('name')
+    email = request.forms.get('email')
+    address = request.forms.get('address')
+    department = request.forms.get('department')
+    print name, email, address, department
     pass
 
 
@@ -59,25 +66,16 @@ def get_dep(id):
     pass
 
 
+@app.route('/dep/all')
+def get_all_deps():
+    pass
+
+
 @app.route('/dep/update/:id', method='POST')
-def update_dep(id):
+def update_dep():
     pass
 
 
 @app.route('/dep', method='POST')
-def create_dep(id):
+def create_dep():
     pass
-
-
-@app.route('/')
-def index():
-    return '''
-        <form action="/img" method="post">
-            identifiant:    <input type="text" name="identifiant" />
-            <input type="submit" value="identifiant" />
-        </form>
-    '''
-
-if __name__ == '__main__':
-    db = Database('thumail')
-    run(app, host='0.0.0.0', port=8080)
