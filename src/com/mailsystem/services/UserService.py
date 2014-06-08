@@ -2,31 +2,31 @@ from src.com.mailsystem.orm import User
 
 class UserService:
     @staticmethod
-    def listAll(database):
-        return database.session().query(User).all()
+    def listAll(db_users):
+        return db_users.session().query(User).all()
 
     @staticmethod
-    def selectById(database, iduserthu):
-        return database.session().query(User).get(iduserthu)
+    def selectById(db_users, iduserthu):
+        return db_users.session().query(User).get(iduserthu)
 
     @staticmethod
-    def add(database, studentnumber, name, email, iddepartment):
-        insertStatement = database.statement(User, "insert")\
+    def add(db_users, studentnumber, name, email, iddepartment):
+        insertStatement = db_users.statement(User, "insert")\
                                     .values(studentnumber = studentnumber,
                                             name = name,
                                             email = email,
                                             iddepartment = iddepartment)
-        result = database.execute(insertStatement)
+        result = db_users.execute(insertStatement)
         if result is not None:
             return result.inserted_primary_key[0]
         return -1
 
     @staticmethod
-    def update(database, iduserthu, name, email, iddepartment):
-        updateStatement = database.statement(User, "update")\
+    def update(db_users, iduserthu, name, email, iddepartment):
+        updateStatement = db_users.statement(User, "update")\
                                     .where(User.__table__.c.iduserthu == iduserthu)\
                                     .values(name = name,
                                             email = email,
                                             iddepartment = iddepartment)
-        result = database.execute(updateStatement)
+        result = db_users.execute(updateStatement)
         return result is not None

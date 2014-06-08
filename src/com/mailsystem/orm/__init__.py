@@ -16,6 +16,7 @@ class User(Base):
     studentnumber = Column(Integer, unique=True)
     name = Column(String(64), nullable=False)
     email = Column(String(128), nullable=False)
+    #iddepartment = Column(Integer, nullable=False)
     iddepartment = Column(Integer, ForeignKey('department.iddepartment'), nullable=False)
     department = relationship(Department,
                               backref=backref('users',
@@ -30,10 +31,12 @@ class Address(Base):
 class UserAddress(Base):
     __tablename__ = 'useraddress'
     iduseraddress = Column(Integer, Sequence('user_address_id_seq'), primary_key=True)
+    #idaddress = Column(Integer, nullable=False)
     idaddress = Column(Integer, ForeignKey('address.idaddress'), nullable=False)
     address = relationship(Address,
                            backref=backref('addresses',
                                            uselist=True))
+    #iduser = Column(Integer, nullable=False)
     iduser = Column(Integer, ForeignKey('userthu.iduserthu'), nullable=False)
     user = relationship(User,
                         backref=backref('addresses',
@@ -48,17 +51,21 @@ class Mail(Base):
     __tablename__ = 'mail'
     idmail = Column(Integer, Sequence('mail_id_seq'), primary_key=True)
     barcode = Column(String(20), unique=True)
-    idstate = Column(Integer, ForeignKey('state.idstate'), nullable=False)
-    state = relationship(State)
-    iddestinationuseraddress = Column(Integer, ForeignKey('useraddress.iduseraddress'), nullable=False)
-    destination = relationship(UserAddress, foreign_keys='Mail.iddestinationuseraddress')
-    idsenderuseraddress = Column(Integer, ForeignKey('useraddress.iduseraddress'), nullable=False)
-    sender = relationship(UserAddress, foreign_keys='Mail.idsenderuseraddress')
+    idstate = Column(Integer, nullable=False)
+    #idstate = Column(Integer, ForeignKey('state.idstate'), nullable=False)
+    #state = relationship(State)
+    idreceiveruseraddress = Column(Integer, nullable=False)
+    #idreceiveruseraddress = Column(Integer, ForeignKey('useraddress.iduseraddress'), nullable=False)
+    #destination = relationship(UserAddress, foreign_keys='Mail.idreceiveruseraddress')
+    idsenderuseraddress = Column(Integer, nullable=False)
+    #idsenderuseraddress = Column(Integer, ForeignKey('useraddress.iduseraddress'), nullable=False)
+    #sender = relationship(UserAddress, foreign_keys='Mail.idsenderuseraddress')
 
 class MailStateHistory(Base):
     __tablename__ = 'mailstatehistory'
-    idstate = Column(Integer, ForeignKey('state.idstate'), primary_key=True)
-    state = relationship(State)
+    idstate = Column(Integer, primary_key=True)
+    #idstate = Column(Integer, ForeignKey('state.idstate'), primary_key=True)
+    #state = relationship(State)
     idmail = Column(Integer, ForeignKey('mail.idmail'), primary_key=True)
     mail = relationship(Mail,
                         backref=backref("statehistory",
