@@ -1,36 +1,44 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from bottle import route, run, static_file, response
+from bottle import run, static_file, response, Bottle
+from src.com.mailsystem.orm.Database import Database
 
 
-@route('/test')
+app = Bottle()
+
+
+@app.route('/test')
 def server_static():
     response.content_type = 'text/json; charset=utf-8'
     return static_file("mini-last.json", root='./data')
 
 
-@route('/mail/:id')
+@app.route('/mail/:id')
 def server_static2(id):
     return static_file("mini-last.json", root='./data')
 
 
-@route('/sender/:username')
+@app.route('/sender/:username')
 def sender(username):
     pass
 
 
-@route('/receiver/:username')
+@app.route('/receiver/:username')
 def receiver(username):
     pass
 
 
-@route('/mail/:id/update', method='POST')
+@app.route('/mail/:id/update', method='POST')
 def udpate(id):
     pass
 
 
-@route('/')
+@app.route('/mail/new', method='POST')
+def new_mail():
+    pass
+
+@app.route('/')
 def index():
     return '''
         <form action="/img" method="post">
@@ -40,4 +48,5 @@ def index():
     '''
 
 if __name__ == '__main__':
-    run(host='0.0.0.0', port=8080)
+    db = Database('thumail')
+    run(app, host='0.0.0.0', port=8080)
