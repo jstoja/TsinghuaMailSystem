@@ -1,3 +1,9 @@
+'''
+Created on 8 juin 2014
+
+@author: julienbordellier
+'''
+
 # coding=utf8
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
@@ -71,16 +77,37 @@ s = db_users.session()
 for adress in adresses:
     s.add(adress)
 
-email_shift = 0
-for department in departments:
-    s.add(department)
-    for username in chinese_names:
-        mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
-        email_shift = email_shift + 1
-        u = User(name=username.decode('utf8'), email=mail, department=department)
-        s.add(u)
-        for adress in adresses:
-            s.add(UserAddress(address=adress, user=u))
+def populate_user_db(user_database):
+    email_shift = 0
+    s = db_users.session()
+    for adress in adresses:
+        s.add(adress)
+    for department in departments:
+        s.add(department)
+        for username in chinese_names:
+            mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
+            email_shift = email_shift + 1
+            u = User(name=username.decode('utf8'), email=mail, department=department)
+            s.add(u)
+            for adress in adresses:
+                s.add(UserAddress(address=adress, user=u))
+    s.commit()
 
-s.commit()
-print "Finish"
+def create_states(db):
+    s = db_users.session()
+    for state in states:
+        s.add(state)
+    s.commit()
+    
+
+def populate_departments_dbs(departments_dbs):
+    for db_name, db in departments_dbs:
+        if db_name == 'users':
+            continue
+        create_states(db)
+        
+
+def populate_db(databases):
+    populate_user_db(databases['users'])
+    populate_departments_dbs(databases)
+    print "Finish"
