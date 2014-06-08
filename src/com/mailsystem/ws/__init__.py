@@ -1,7 +1,11 @@
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
+from src.com.mailsystem.services.DepartmentService import DepartmentService
 
 db1 = Database('mailsystem_1')
+
+for d in DepartmentService.listAll(db1):
+    print str(d.idDepartment) + ' ' +  d.name
 
 '''
 d1 = Department(name="CS")
@@ -77,6 +81,6 @@ s.add(ua16)
 
 s.commit()
 '''
-
-ins = db1.getStatement(UserAddress, 'insert').values(idAddress = 1, idUser = 1)
-db1.execute(ins)
+#db1.insert(UserAddress, idAddress = 1, idUser = 1)
+#ins = db1.getStatement(UserAddress, 'insert').values(idAddress = 1, idUser = 1)
+#db1.execute(ins)
