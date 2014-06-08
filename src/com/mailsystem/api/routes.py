@@ -28,10 +28,9 @@ def server_static():
     return static_file("mini-last.json", root='./data')
 
 
-@app.route('/mail/:id:int')
-def get_mail(id):
-    # TODO: besoin de savoir dans quelle db est le mail
-    mail = MailService.selectById(app.dbs['LAW'], id)
+@app.route('/mail/id/:barcode')
+def get_mail_id(barcode):
+    mail = MailService.selectById(app.dbs['LAW'], barcode)
     m = {
         'barcode': mail.barcode,
         'Sender': mail.idsenderuseraddress,
@@ -43,8 +42,8 @@ def get_mail(id):
 
 @app.route('/mail/:barcode')
 def get_mail_barcode(barcode):
-    # TODO: besoin de savoir dans quelle db est le mail
-    mail = MailService.selectById(app.dbs['LAW'], id)
+    db = MailService.findDatabaseForBarcode(app.dbs, barcode)
+    mail = MailService.selectByBarcode(db, barcode)
     m = {
         'barcode': mail.barcode,
         'Sender': mail.idsenderuseraddress,
@@ -52,7 +51,6 @@ def get_mail_barcode(barcode):
         'State': mail.idstate
     }
     return m
-
 
 
 @app.route('/mail/dep/:id')

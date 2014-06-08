@@ -5,6 +5,7 @@ Created on 8 juin 2014
 '''
 
 import uuid
+import src.com.mailsystem.codes as codes
 from src.com.mailsystem.orm import Mail
 from src.com.mailsystem.services.UserAddressService import UserAddressService
 from src.com.mailsystem.services.MailStateHistoryService import MailStateHistoryService
@@ -13,34 +14,35 @@ class MailService:
     @staticmethod
     def selectById(db_department, idmail):
         return db_department.session().query(Mail).get(idmail)
-    
+
     @staticmethod
     def selectByBarcode(db_department, barcode):
         return db_department.session().query(Mail).filter(Mail.barcode == barcode).scalar()
-    
+
     @staticmethod
     def __findDatabaseForUserAddress(databases, iduseraddress):
         ua = UserAddressService.selectById(databases['users'], iduseraddress)
         if ua is None:
             return None
-        return databases[ua.user.department.name]
-    
+        return (ua.user.department.name, databases[ua.user.department.name])
+
     @staticmethod
-    def __findDatabaseForBarcode(databases, codes, barcode):
-        return databases[codes[barcode.split('-')[0]]]
-    
+    def findDatabaseForBarcode(databases, barcode):
+        return databases[str(codes.codes[barcode.split('-')[0]])]
+
     @staticmethod
     def __genBarcode(database_id):
         return (str(database_id) + "-" + str(uuid.uuid4()))
-    
+
     @staticmethod
-    def add(databases, idstate, idsenderua, idreceiverua):        
-        db_sender = MailService.__findDatabaseForUserAddress(databases, idsenderua)
-        db_receiver = MailService.__findDatabaseForUserAddress(databases, idreceiverua)
+    def add(databases, idstate, idsenderua, idreceiverua):
+        db_sender_name, db_sender = MailService.__findDatabaseForUserAddress(databases, idsenderua)
+        db_receiver_name, db_receiver = MailService.__findDatabaseForUserAddress(databases, idreceiverua)
         if db_receiver is None or db_receiver is None:
             return None
-        
-        generatedBarcode = MailService.__genBarcode("01")
+
+        code = codes.rev_codes[db_sender_name]
+        generatedBarcode = MailService.__genBarcode(code)
         insertStatement = db_sender.statement(Mail, "insert")\
                                     .values(barcode = generatedBarcode,
                                             idstate = idstate,
@@ -59,22 +61,22 @@ class MailService:
             idreceiverdb = result.inserted_primary_key[0]
             MailStateHistoryService.add(db_receiver, 1, idreceiverdb)
         return generatedBarcode
-    
+
     @staticmethod
     def update(databases, codes, barcode, idstate):
-        db_sender = MailService.__findDatabaseForBarcode(databases, codes, barcode)
+        db_sender = MailService.findDatabaseForBarcode(databases, codes, barcode)
         if db_sender is None:
             return None
-        
+
         currentMail = MailService.selectByBarcode(db_sender, barcode)
         if currentMail is None:
             return None
-        
+
         db_sender = MailService.__findDatabaseForUserAddress(databases, currentMail.idsenderuseraddress)
         db_receiver = MailService.__findDatabaseForUserAddress(databases, currentMail.idreceiveruseraddress)
         if db_sender is None or db_receiver is None:
             return None
-        
+
         updateStatement = db_sender.statement(Mail, "update")\
                                     .where(Mail.__table__.c.barcode == barcode)\
                                     .values(idstate = idstate)
