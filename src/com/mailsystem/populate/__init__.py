@@ -1,3 +1,4 @@
+# coding=utf8
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
 
@@ -111,7 +112,7 @@ adresses = [
 
 
 db_users = Database("users")
-s = db.session()
+s = db_users.session()
 s.commit()
 for adress in adresses:
     s.add(adress)
@@ -121,17 +122,8 @@ for department in departments:
     s.add(department)
     for username in chinese_names:
         mail = "w_" + email_shift + "@mail.tsinghua.edu.cn"
+        email_shift = email_shift + 1
         u = User(name=username, email=mail, department=department)
         s.add(u)
         for adress in adresses:
-            s.add(UserAddress(address=adress, user=u)
-
-
-
-
-#for i in len(departments):
-#    db = Database("mailsystem_" + i)
-#    s = db.session()
-
-
-
+            s.add(UserAddress(address=adress, user=u))
