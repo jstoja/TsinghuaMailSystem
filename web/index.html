@@ -16,23 +16,25 @@
             <img class='img-responsive' src='img/logo.jpg'>
           </div>
           <div class='col-xs-3 col-xs-offset-4'>
-            <button>coucou</button>
+            <!-- /%button coucou -->
           </div>
         </div>
         <div class='row main-ui' ng-controller='MailboxController as mailbox'>
           <div class='col-xs-3'>
             <ul>
               <li class='list-box' ng-repeat='mail in mailbox.mails'>
-                <a ng-click='mailbox.currentMail = mail'>
-                  <!-- %p {{ mail.receiver }} -->
-                  <p>From: {{ mail.sender }}</p>
-                  <p>the {{ mail.date | date }}</p>
-                </a>
+                <div class='box'>
+                  <a ng-click='mailbox.currentMail = mail'>
+                    <!-- %p {{ mail.receiver }} -->
+                    <p>From: {{ mail.sender }}</p>
+                    <p>the {{ mail.date | date }}</p>
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
           <div class='col-xs-9'>
-            <div class='row'>
+            <div class='row head-details'>
               <div class='col-xs-3'>
                 <p>Receiver: {{ mailbox.currentMail.receiver }}</p>
                 <p>Sender: {{ mailbox.currentMail.sender }}</p>
@@ -42,7 +44,7 @@
               </div>
             </div>
             <div class='row'>
-              <div class='col-xs-6'>
+              <div class='col-xs-6 history'>
                 History:
                 <ul>
                   <li ng-repeat='history in mailbox.currentMail.history'>
@@ -58,10 +60,10 @@
                 </ul>
               </div>
               <div class='col-xs-6'>
-                <p>Action1</p>
-                <p>Action2</p>
-                <p>Action3</p>
-                <p>Action4</p>
+                <button class='btn btn-default'>Action1</button>
+                <button class='btn btn-default'>Action2</button>
+                <button class='btn btn-default'>Action3</button>
+                <button class='btn btn-default'>Action4</button>
               </div>
             </div>
           </div>

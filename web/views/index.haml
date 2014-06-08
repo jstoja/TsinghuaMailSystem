@@ -16,25 +16,26 @@
           .col-xs-2.col-xs-offset-1
             %img{:src => "img/logo.jpg", :class => "img-responsive"}
           .col-xs-3.col-xs-offset-4
-            %button coucou
+            //%button coucou
         .row.main-ui{"ng-controller" => "MailboxController as mailbox"}
           .col-xs-3
             %ul
               %li{"class"   => "list-box",
                 "ng-repeat" => "mail in mailbox.mails"}
-                %a{"ng-click"  => "mailbox.currentMail = mail"}
-                  /%p {{ mail.receiver }}
-                  %p From: {{ mail.sender }}
-                  %p the {{ mail.date | date }}
+                .box
+                  %a{"ng-click"  => "mailbox.currentMail = mail"}
+                    /%p {{ mail.receiver }}
+                    %p From: {{ mail.sender }}
+                    %p the {{ mail.date | date }}
           .col-xs-9
-            .row
+            .row.head-details
               .col-xs-3
                 %p Receiver: {{ mailbox.currentMail.receiver }}
                 %p Sender: {{ mailbox.currentMail.sender }}
               .col-xs-3.col-xs-offset-6
                 %p {{ mailbox.currentMail.date | date }}
             .row
-              .col-xs-6
+              .col-xs-6.history
                 History:
                 %ul
                   %li{"ng-repeat" => "history in mailbox.currentMail.history"}
@@ -44,10 +45,10 @@
                       .col-xs-2.col.xs-offset-2
                         {{ history.status }}
               .col-xs-6
-                %p Action1
-                %p Action2
-                %p Action3
-                %p Action4
+                %button{"class"=>"btn btn-default"} Action1
+                %button{"class"=>"btn btn-default"} Action2
+                %button{"class"=>"btn btn-default"} Action3
+                %button{"class"=>"btn btn-default"} Action4
 
 
       %script{:src => "js/angular.min.js", :type=>"text/javascript"}

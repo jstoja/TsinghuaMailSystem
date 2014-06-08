@@ -81,6 +81,40 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* line 21, ../sass/screen.scss */
 .list-box {
+  height: 5em;
   border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+}
+/* line 29, ../sass/screen.scss */
+.list-box .box {
+  height: 100%;
+  background-color: #C7A9D9;
+}
+/* line 32, ../sass/screen.scss */
+.list-box .box:hover {
+  background-color: #D4B3E8;
+}
+/* line 37, ../sass/screen.scss */
+.list-box a {
+  text-decoration: none;
+  color: black;
+}
+/* line 40, ../sass/screen.scss */
+.list-box a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+/* line 47, ../sass/screen.scss */
+.head-details {
+  border-bottom: 1px solid gray;
+  margin-top: 1em;
+  margin-bottom: 3em;
+  padding-bottom: 2em;
+}
+
+/* line 54, ../sass/screen.scss */
+.history {
+  height: 20em;
   border-right: 1px solid gray;
 }
