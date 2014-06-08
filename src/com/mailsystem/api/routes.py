@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from json import dumps
+
 from bottle import static_file, response, Bottle, request, hook
 from src.com.mailsystem.services import DepartmentService, UserService
 
@@ -8,14 +10,15 @@ from src.com.mailsystem.services import DepartmentService, UserService
 app = Bottle()
 
 
-#
-# Je crois que c'est ce qui permets d'envoyer à tous les sites qui demandent de l'AJAX :) (à tester)
-#
 @hook('after_request')
 def enable_cors():
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT'
-    response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+    r = response
+    r.headers['Access-Control-Allow-Origin'] = '*'
+    r.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT'
+    r.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With,'
+    ' Content-Type, Accept'
+    r.content_type = 'text/json; charset=utf-8'
+
 
 @app.route('/test')
 def server_static():
@@ -48,11 +51,22 @@ def create_mail():
     pass
 
 
+@app.route('/user/all')
+def get_all_users():
+    pass
+
+
 @app.route('/user/:id')
 def get_user(id):
-    db = app.dbs['users']
-    UserService.selectById(db, id)
-    return id
+    user = UserService.selectById(app.dbs['users'], id)
+    print user.name, user.email, user.iddepartment
+    print user
+    if user is None:
+        return ""
+    u = {'name': user.name, 'email': user.email,
+         'department': user.iddepartment}
+    response.content_type = 'text/json; charset=utf-8'
+    return dumps(u)
 
 
 @app.route('/user/update/:id', method='POST')
@@ -67,6 +81,7 @@ def create_user():
     address = request.forms.get('address')
     department = request.forms.get('department')
     print name, email, address, department
+    print request.body.read()
     pass
 
 

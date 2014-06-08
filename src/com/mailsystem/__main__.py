@@ -26,7 +26,7 @@ def read_config(setup_file):
 def connect_dbs(setup):
     databases = {}
     databases['users'] = Database(
-        'users',
+        'thumailusers',
         setup['users']['user'],
         setup['users']['password'],
         setup['users']['host'],

@@ -7,5 +7,12 @@ class UserService:
         return database.session().query(User).all()
 
     @staticmethod
-    def selectById(database, id):
-        return database.session().query(User).get(id)
+    def selectById(database, iduserthu):
+        return database.session().query(User).get(iduserthu)
+
+    @staticmethod
+    def add(database, name, email, department):
+        s = database.session()
+        user = User(name=name, email=email, department=department)
+        s.add(user)
+        s.commit()
