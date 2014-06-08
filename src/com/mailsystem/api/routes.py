@@ -54,7 +54,16 @@ def create_mail():
 
 @app.route('/user/all')
 def get_all_users():
-    pass
+    users = UserService.listAll(app.dbs['users'])
+    if users is None:
+        return ""
+    us = []
+    for user in users:
+        u = {'name': user.name, 'email': user.email,
+             'department': user.iddepartment}
+        us.append(u)
+    response.content_type = 'text/json; charset=utf-8'
+    return dumps(us)
 
 
 @app.route('/user/:id')
@@ -71,29 +80,45 @@ def get_user(id):
 
 
 @app.route('/user/update/:id', method='POST')
-def update_user():
-    pass
+def update_user(id):
+    name = request.forms.get('name')
+    email = request.forms.get('email')
+    department = request.forms.get('department')
+    print name, email, department
+    print request.body.read()
+    return UserService.update(
+        app.dbs['users'],
+        id,
+        name,
+        email,
+        department
+    )
 
 
 @app.route('/user', method='POST')
 def create_user():
     name = request.forms.get('name')
     email = request.forms.get('email')
-    address = request.forms.get('address')
     department = request.forms.get('department')
-    print name, email, address, department
-    print request.body.read()
-    pass
+    print name, email, department
+    UserService.add(app.dbs['users'], name, email, department)
 
 
 @app.route('/dep/:id')
 def get_dep(id):
-    pass
+    dep = DepartmentService.selectById(app.dbs['LAW'], id)
+    if dep is None:
+        return ""
+    return dumps({"iddepartment": dep.iddepartment, "name": dep.name})
 
 
 @app.route('/dep/all')
 def get_all_deps():
-    deps = DepartmentService.DepartmentService.listAll(app.dbs['LAW'])
+    deps = DepartmentService.listAll(app.dbs['LAW'])
+    dep_list = []
+    for dep in deps:
+        dep_list.append({"iddepartment": dep.iddepartment, "name": dep.name})
+    return dumps(dep_list)
 
 
 @app.route('/dep/update/:id', method='POST')

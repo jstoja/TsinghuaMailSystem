@@ -18,20 +18,22 @@ class Database:
         self.mustRecover = os.stat(name + '.logfile').st_size > 0
         self.recovering = False
         self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
-        
-        #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False)
+
         self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port))
         try:
             self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
         except:
             pass
         self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, encoding='utf8')
+
         #self.engine = create_engine('sqlite:///' + name, encoding='utf8')
+
         #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
+
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         Schema.create(self.engine)
-    
+
     def session(self):
         return self.session()
 
@@ -39,7 +41,7 @@ class Database:
         statement = getattr(table.__table__, func)()
         statement.bind = self.engine
         return statement
-    
+
     def __recover(self):
         try:
             self.recovering = True
@@ -60,7 +62,7 @@ class Database:
             self.mustRecover = True
             self.recovering = False
             print("Failed recovery of '" + self.name + "': ", sys.exc_info()[0], " - ", sys.exc_info()[1])
-        
+
     def execute(self, statement, **kwargs):
         if self.mustRecover and self.recovering == False:
             self.__recover()
@@ -82,7 +84,3 @@ class Database:
             print("FAIL: " + self.name + ": ", sys.exc_info()[1])
             self.mustRecover = True
             return None
-        #TODO: Distinguish sql exception from error
-        #except:
-        #    print("Error: " + self.name + ": " + str(statement) + str(statement.compile().params) + ": ", sys.exc_info()[0], " - ", sys.exc_info()[1])
-        #    return None 

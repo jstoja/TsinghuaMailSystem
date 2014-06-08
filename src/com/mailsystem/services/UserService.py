@@ -20,13 +20,13 @@ class UserService:
         if result is not None:
             return result.inserted_primary_key[0]
         return -1
-    
+
     @staticmethod
-    def update(database, iduserthu, name, email, department):
+    def update(database, iduserthu, name, email, iddepartment):
         updateStatement = database.statement(User, "update")\
                                     .where(User.__table__.c.iduserthu == iduserthu)\
                                     .values(name = name,
                                             email = email,
-                                            iddepartment = department.iddepartment)
+                                            iddepartment = iddepartment)
         result = database.execute(updateStatement)
         return result is not None
