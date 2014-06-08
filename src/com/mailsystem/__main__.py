@@ -5,6 +5,9 @@ import sys
 import json
 import argparse
 
+from bottle import run
+
+import src.com.mailsystem.api.routes as api
 from src.com.mailsystem.orm.Database import Database
 
 
@@ -25,7 +28,14 @@ def read_config(setup_file):
 
 def connect_dbs(setup):
     databases = {}
-    for db in setup:
+    databases['users'] = Database(
+        'users',
+        setup['users']['user'],
+        setup['users']['password'],
+        setup['users']['host'],
+        setup['users']['port']
+    )
+    for db in setup['departments']:
         infos = setup[db]
         if db not in databases:
             databases[db] = Database(
@@ -48,3 +58,5 @@ if __name__ == '__main__':
     setup_file = args.setup
     setup = read_config(setup_file)
     dbs = connect_dbs(setup)
+    api.app.dbs = dbs
+    run(api.app, host='0.0.0.0', port=8080)

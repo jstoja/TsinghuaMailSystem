@@ -1,26 +1,34 @@
 {
-  "ART": {
+  "users": {
         "user": "root",
           "password": "root",
           "host": "localhost",
           "port": 3306
   },
-    "ENV": {
-          "user": "root",
-          "password": "root",
-          "host": "localhost",
-          "port": 3306
-    },
-    "CS": {
-          "user": "root",
-          "password": "root",
-          "host": "localhost",
-          "port": 3306
-    },
-    "LAW": {
-          "user": "root",
-          "password": "root",
-          "host": "localhost",
-          "port": 3306
+    "departments": {
+          "ART": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "ENV": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "CS": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "LAW": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          }
     }
 }
