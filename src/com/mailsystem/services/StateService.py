@@ -8,23 +8,26 @@ from src.com.mailsystem.orm import State
 
 class StateService:
     @staticmethod
-    def listAll(database):
-        return database.session().query(State).all()
+    def listAll(db_users):
+        return db_users.session().query(State).all()
     
     @staticmethod
-    def selectById(database, idstate):
-        return database.session().query(State).get(idstate)
+    def selectById(db_users, idstate):
+        return db_users.session().query(State).get(idstate)
     
     @staticmethod
-    def add(database, name):
-        insertStatement = database.statement(State, "insert").values(name = name)
-        result = database.execute(insertStatement)
+    def add(db_users, name):
+        insertStatement = db_users.statement(State, "insert")\
+                                    .values(name = name)
+        result = db_users.execute(insertStatement)
         if result is not None:
             return result.inserted_primary_key[0]
         return -1
     
     @staticmethod
-    def update(database, idstate, name):
-        updateStatement = database.statement(State, "update").where(State.__table__.c.idstate == idstate).values(name = name)
-        result = database.execute(updateStatement)
+    def update(db_users, idstate, name):
+        updateStatement = db_users.statement(State, "update")\
+                                    .where(State.__table__.c.idstate == idstate)\
+                                    .values(name = name)
+        result = db_users.execute(updateStatement)
         return result is not None
