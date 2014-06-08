@@ -4,9 +4,8 @@
 from json import dumps
 
 from bottle import static_file, response, Bottle, request, hook
-# from src.com.mailsystem.services.DepartmentService import DepartmentService
+from src.com.mailsystem.services.DepartmentService import DepartmentService
 from src.com.mailsystem.services.UserService import UserService
-from src.com.mailsystem.orm import User, Department
 
 
 app = Bottle()
@@ -107,13 +106,19 @@ def create_user():
 
 @app.route('/dep/:id')
 def get_dep(id):
-    pass
+    dep = DepartmentService.selectById(app.dbs['LAW'], id)
+    if dep is None:
+        return ""
+    return dumps({"iddepartment": dep.iddepartment, "name": dep.name})
 
 
 @app.route('/dep/all')
 def get_all_deps():
-    # deps = DepartmentService.listAll(app.dbs['LAW'])
-    pass
+    deps = DepartmentService.listAll(app.dbs['LAW'])
+    dep_list = []
+    for dep in deps:
+        dep_list.append({"iddepartment": dep.iddepartment, "name": dep.name})
+    return dumps(dep_list)
 
 
 @app.route('/dep/update/:id', method='POST')
