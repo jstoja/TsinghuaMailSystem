@@ -1,6 +1,7 @@
 from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, Sequence, func
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.schema import UniqueConstraint
 
 Base = declarative_base()
 
@@ -12,6 +13,7 @@ class Department(Base):
 class User(Base):
     __tablename__ = 'userthu'
     iduserthu = Column(Integer, Sequence('user_id_seq'), primary_key=True)
+    studentnumber = Column(Integer, unique=True)
     name = Column(String(64), nullable=False)
     email = Column(String(128), nullable=False)
     iddepartment = Column(Integer, ForeignKey('department.iddepartment'), nullable=False)
@@ -45,6 +47,7 @@ class State(Base):
 class Mail(Base):
     __tablename__ = 'mail'
     idmail = Column(Integer, Sequence('mail_id_seq'), primary_key=True)
+    barcode = Column(String(20), unique=True)
     idstate = Column(Integer, ForeignKey('state.idstate'), nullable=False)
     state = relationship(State)
     iddestinationuseraddress = Column(Integer, ForeignKey('useraddress.iduseraddress'), nullable=False)

@@ -6,6 +6,7 @@ Created on 8 juin 2014
 
 from __future__ import print_function
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import IntegrityError, ProgrammingError
 from sqlalchemy.orm import sessionmaker
 from src.com.mailsystem.orm import Schema
 import sys, os, ast, re
@@ -70,12 +71,18 @@ class Database:
             result = conn.execute(statement, kwargs)
             conn.close()
             return result
+        except IntegrityError, ProgrammingError:
+            print("ERROR: " + self.name + ": ", sys.exc_info()[1])
         except:
             if self.recovering:
                 raise
             #Log
             print(self.logRegex.sub(r":\1", str(statement)), file=self.logfile)
             print(str(statement.compile().params), file=self.logfile)
-            print("FAIL: " + self.name + ": " + str(statement) + str(statement.compile().params) + ": ", sys.exc_info()[0], " - ", sys.exc_info()[1])
+            print("FAIL: " + self.name + ": ", sys.exc_info()[1])
             self.mustRecover = True
-            return None    
+            return None
+        #TODO: Distinguish sql exception from error
+        #except:
+        #    print("Error: " + self.name + ": " + str(statement) + str(statement.compile().params) + ": ", sys.exc_info()[0], " - ", sys.exc_info()[1])
+        #    return None 
