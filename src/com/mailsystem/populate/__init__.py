@@ -1,4 +1,12 @@
+'''
+Created on 8 juin 2014
+
+@author: julienbordellier
+'''
+
+
 # coding=utf8
+from datetime import date
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
 
@@ -71,16 +79,66 @@ s = db_users.session()
 for adress in adresses:
     s.add(adress)
 
-email_shift = 0
-for department in departments:
-    s.add(department)
-    for username in chinese_names:
-        mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
-        email_shift = email_shift + 1
-        u = User(name=username.decode('utf8'), email=mail, department=department)
-        s.add(u)
-        for adress in adresses:
-            s.add(UserAddress(address=adress, user=u))
+def populate_user_db(user_database, session):
+    email_shift = 0
+    users = []
+    for adress in adresses:
+        session.add(adress)
+    for department in departments:
+        session.add(department)
+        for username in chinese_names:
+            mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
+            email_shift = email_shift + 1
+            u = User(name=username.decode('utf8'), email=mail, department=department)
+            users.append(u)
+            session.add(u)
+            for adress in adresses:
+                session.add(UserAddress(address=adress, user=u))
+    return users
+    
 
-s.commit()
-print "Finish"
+def create_states(db, users):
+    s = db.session()
+    for state in states:
+        s.add(state)
+    s.commit()
+    
+def add_mail(db_sender, db_receiver, sender, receiver, state):
+    s = db_sender.session()
+    s.add(Mail(state=state, destination=receiver, sender=sender))
+    s.commit()
+    s = db_receiver.session()
+    s.add(Mail(state=state, destination=receiver, sender=sender))
+    s.commit()
+
+def add_history(db_sender, db_receiver, state, mail, date):
+    s = db_sender.session()
+    s.add(Mail(state=state, mail=mail, date=date))
+    s.commit()
+    s = db_receiver.session()
+    s.add(Mail(state=state, mail=mail, date=date))
+    s.commit()
+
+def populate_departments_dbs(departments_dbs, users):
+    for db_name, db in departments_dbs:
+        if db_name == 'users':
+            continue
+        else:
+            create_states(db)
+    for sender in users:
+        for receiver in users:
+            sender_db = departments_dbs[sender.department]
+            receiver_db = departments_dbs[receiver.department] 
+            m = add_mail(sender_db, receiver_db, sender, receiver, states[0])
+            for state in states:
+                if state == states[0]:
+                    continue
+                else:
+                    add_history(sender_db, receiver_db, state, m, date.today())
+
+def populate_db(databases):
+    s = db_users.session()
+    users = populate_user_db(databases['users'], s)
+    populate_departments_dbs(databases, users)
+    s.commit()
+    print "Finish populating the DBs"

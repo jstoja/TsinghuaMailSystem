@@ -9,6 +9,7 @@ from bottle import run
 
 import src.com.mailsystem.api.routes as api
 from src.com.mailsystem.orm.Database import Database
+from src.com.mailsystem.populate import populate_db
 
 
 def read_config(setup_file):
@@ -50,10 +51,18 @@ if __name__ == '__main__':
         '--setup', default='setup.json',
         help="A JSON file with DB's configuration (defaults to setup.json)"
     )
+    parser.add_argument(
+        '--populate', action='store_true', default=False,
+        help="Generate data to populate the databases"
+    )
     args = parser.parse_args()
 
     setup_file = args.setup
+    populate = args.populate
+
     setup = read_config(setup_file)
     dbs = connect_dbs(setup)
+    if populate:
+        populate_db(dbs)
     api.app.dbs = dbs
     run(api.app, host='0.0.0.0', port=8080)
