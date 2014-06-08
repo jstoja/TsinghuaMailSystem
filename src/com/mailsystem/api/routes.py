@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from bottle import static_file, response, Bottle, request
+from bottle import static_file, response, Bottle, request, hook
 from src.com.mailsystem.services import DepartmentService, UserService
 
 
 app = Bottle()
 
+
+#
+# Je crois que c'est ce qui permets d'envoyer à tous les sites qui demandent de l'AJAX :) (à tester)
+#
+@hook('after_request')
+def enable_cors():
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
 
 @app.route('/test')
 def server_static():
