@@ -4,7 +4,8 @@
 from json import dumps
 
 from bottle import static_file, response, Bottle, request, hook
-from src.com.mailsystem.services import DepartmentService, UserService
+from src.com.mailsystem.services.DepartmentService import DepartmentService
+from src.com.mailsystem.services.UserService import UserService
 
 
 app = Bottle()
@@ -92,7 +93,7 @@ def get_dep(id):
 
 @app.route('/dep/all')
 def get_all_deps():
-    pass
+    deps = DepartmentService.DepartmentService.listAll(app.dbs['LAW'])
 
 
 @app.route('/dep/update/:id', method='POST')
