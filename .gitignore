@@ -1,4 +1,6 @@
 .sass-cache/
+.pydevproject
+.settings/
 *.swp
 *.pyc
 venv

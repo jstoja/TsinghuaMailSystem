@@ -23,56 +23,14 @@ states = [
 ]
         
 chinese_names = [
-"张伟", 
-"王伟",
-"王芳",
-"李伟",
-"王秀英",
-"李秀英",
-"李娜",
-"张秀英",
-"刘伟",
-"张敏",
-"李静",
-"张丽",
-"王静",
-"王丽",
-"李强",
-"张静",
-"李敏",
-"王敏",
-"王磊",
-"李军",
-"刘洋",
-"王勇",
-"张勇",
-"王艳",
-"李杰",
-"张磊",
-"王强",
-"王军",
-"张杰",
-"李娟",
-"张艳",
-"张涛",
-"王涛",
-"李明",
-"李艳",
-"王超",
-"李勇",
-"王娟",
-"刘杰",
-"王秀兰",
-"李霞",
-"刘敏",
-"张军",
-"李丽",
-"张强",
-"王平",
-"王刚",
-"王杰",
-"李桂英",
-"刘芳"] 
+    "张伟", "王伟","王芳","李伟","王秀英","李秀英","李娜","张秀英","刘伟","张敏",
+    "李静","张丽","王静","王丽","李强","张静","李敏","王敏","王磊","李军","刘洋",
+    "王勇","张勇","王艳","李杰","张磊","王强","王军","张杰","李娟","张艳","张涛",
+    "王涛","李明","李艳","王超","李勇","王娟","刘杰","王秀兰","李霞","刘敏","张军",
+    "李丽","张强","王平","王刚","王杰","李桂英","刘芳"
+] 
+
+#chinese_names = ["lina","mia","lifei","hefei"]
 
 adresses = [
     Address(name="Zijing 1"), 
@@ -111,9 +69,8 @@ adresses = [
 ]
 
 
-db_users = Database("users")
+db_users = Database('thumailusers', 'thumail', 'thumail', 'localhost', 5432)
 s = db_users.session()
-s.commit()
 for adress in adresses:
     s.add(adress)
 
@@ -121,9 +78,11 @@ email_shift = 0
 for department in departments:
     s.add(department)
     for username in chinese_names:
-        mail = "w_" + email_shift + "@mail.tsinghua.edu.cn"
+        mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
         email_shift = email_shift + 1
-        u = User(name=username, email=mail, department=department)
+        u = User(name=username.decode('utf8'), email=mail, department=department)
+        print u.name
         s.add(u)
         for adress in adresses:
             s.add(UserAddress(address=adress, user=u))
+s.commit()
