@@ -11,12 +11,18 @@ from datetime import date
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
 from mercurial.revset import destination
+from src.com.mailsystem.services.UserService import UserService
+from src.com.mailsystem.services.AddressService import AddressService
+from src.com.mailsystem.services.DepartmentService import DepartmentService
+from src.com.mailsystem.services.UserAddressService import UserAddressService 
+from src.com.mailsystem.services.StateService import StateService 
+from src.com.mailsystem.services.MailService import MailService
 
 departments = [
-    Department(name="LAW"),
-    Department(name="CS"),
-    Department(name="ART"),
-    Department(name="ENV")#,
+    "LAW",
+    "CS",
+    "ART",
+    "ENV"#,
 #     Department(name="PHY"),
 #     Department(name="CH"),
 #     Department(name="FI"),
@@ -41,39 +47,39 @@ chinese_names = [
 ]
 
 adresses = [
-    Address(name="Zijing 1"),
-    Address(name="Zijing 2"),
-    Address(name="Zijing 3"),
-    Address(name="Zijing 4"),
-    Address(name="Zijing 5"),
-    Address(name="Zijing 6"),
-    Address(name="Zijing 7"),
-    Address(name="Zijing 8"),
-    Address(name="Zijing 9"),
-    Address(name="Zijing 10"),
-    Address(name="Zijing 11"),
-    Address(name="Zijing 12"),
-    Address(name="Zijing 13"),
-    Address(name="Zijing 14"),
-    Address(name="Zijing 15"),
-    Address(name="Zijing 16"),
-    Address(name="Zijing 17"),
-    Address(name="Zijing 18"),
-    Address(name="Zijing 19"),
-    Address(name="Zijing 20"),
-    Address(name="Zijing 21"),
-    Address(name="Zijing 22"),
-    Address(name="Zijing 23"),
-    Address(name="Zijing 24"),
-    Address(name="Lab of PHY"),
-    Address(name="Lab of CH"),
-    Address(name="Lab of LAW"),
-    Address(name="Lab of FI"),
-    Address(name="Lab of CS"),
-    Address(name="Lab of ECO"),
-    Address(name="Lab of ART"),
-    Address(name="Lab of ENV"),
-    Address(name="Lab of ADM")
+    "Zijing 1",
+    "Zijing 2",
+    "Zijing 3",
+    "Zijing 4",
+    "Zijing 5",
+    "Zijing 6",
+    "Zijing 7",
+    "Zijing 8",
+    "Zijing 9",
+    "Zijing 10",
+    "Zijing 11",
+    "Zijing 12",
+    "Zijing 13",
+    "Zijing 14",
+    "Zijing 15",
+    "Zijing 16",
+    "Zijing 17",
+    "Zijing 18",
+    "Zijing 19",
+    "Zijing 20",
+    "Zijing 21",
+    "Zijing 22",
+    "Zijing 23",
+    "Zijing 24",
+    "Lab of PHY",
+    "Lab of CH",
+    "Lab of LAW",
+    "Lab of FI",
+    "Lab of CS",
+    "Lab of ECO",
+    "Lab of ART",
+    "Lab of ENV",
+    "Lab of ADM"
 ]
 
 # db_users = Database('thumailusers', 'thumail', 'thumail', 'localhost', 5432)
@@ -81,59 +87,53 @@ adresses = [
 # for adress in adresses:
 #     s.add(adress)
 
-def populate_user_db(user_database, session):
+def populate_user_db(user_database, ids):
     email_shift = 0
-    users = []
+    ids['address'] = {}
+    ids['department'] = {}
+    ids['user'] = {}
+    ids['useraddress'] = {}
     for adress in adresses:
-        session.add(adress)
+        ids['address'][adress] = AddressService.add(user_database, adress)
     for department in departments:
-        session.add(department)
+        ids['department'][department] = DepartmentService.add(user_database, department)
         for username in chinese_names:
             mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
+            ids['user'][username] = UserService.add(user_database, email_shift, username.decode('utf8'), mail, ids['department'][department])
             email_shift = email_shift + 1
-            u = User(name=username.decode('utf8'), email=mail, department=department)
-            users.append(u)
-            session.add(u)
             for adress in adresses:
-                session.add(UserAddress(address=adress, user=u))
-    return users
+                ids['useraddress'][adress] = UserAddressService.add(user_database, ids['address'][adress], ids['user'][username])
+#     email_shift = 0
+#     users = []
+#     for adress in adresses:
+#         session.add(adress)
+#     for department in departments:
+#         session.add(department)
+#         for username in chinese_names:
+#             mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
+#             email_shift = email_shift + 1
+#             u = User(name=username.decode('utf8'), email=mail, department=department)
+#             users.append(u)
+#             session.add(u)
+#             for adress in adresses:
+#                 session.add(UserAddress(address=adress, user=u))
+#     return users
 
-
-def create_states(db):
-    s = db.session()
-    for state in states:
-        s.add(State(name=state))
-    s.commit()
-
-def add_mail(db_sender, db_receiver, sender, receiver, state):
-    s = db_sender.session()
-    s.add(Mail(state=state, destination=receiver, sender=sender))
-    s.commit()
-    s = db_receiver.session()
-    s.add(Mail(state=state, destination=receiver, sender=sender))
-    s.commit()
-
-def add_history(db_sender, db_receiver, state, mail, date):
-    s = db_sender.session()
-    s.add(Mail(state=state, mail=mail, date=date))
-    s.commit()
-    s = db_receiver.session()
-    s.add(Mail(state=state, mail=mail, date=date))
-    s.commit()
-
-def populate_departments_dbs(departments_dbs, users):
+def populate_departments_dbs(departments_dbs, ids):
+    ids['state'] = {}
     for db_name in departments_dbs:
         if db_name == 'users':
             continue
         else:
-            print db_name
-            create_states(departments_dbs[db_name])
-    for sender in users:
-        for receiver in users:
+            for state in states:
+                ids['state'][state] = StateService.add(departments_dbs[db_name], state)
+    for sender in ids['user']:
+        for receiver in ids['user']:
+            MailService.add(departments_dbs['users'], 0, ids['user'][sender], ids['user'][receiver])
             #print sender.department.name, "  --  ", receiver.department.name
-            print UserAddress.address.values()
-            sender_db = departments_dbs[sender.department.name]
-            receiver_db = departments_dbs[receiver.department.name]
+            #print UserAddress.address.values()
+            #sender_db = departments_dbs[sender.department.name]
+            #receiver_db = departments_dbs[receiver.department.name]
 #             s = sender_db.session()
 
 #             s.add(Mail(state=state, destination=receiver, sender=sender))
@@ -149,8 +149,7 @@ def populate_departments_dbs(departments_dbs, users):
 #                     add_history(sender_db, receiver_db, State(name=state), m, date.today())
 
 def populate_db(databases):
-    s = databases['users'].session()
-    users = populate_user_db(databases['users'], s)
-    populate_departments_dbs(databases, users)
-    s.commit()
+    ids = {}
+    populate_user_db(databases['users'], ids)
+    populate_departments_dbs(databases, ids)
     print "Finish populating the DBs"
