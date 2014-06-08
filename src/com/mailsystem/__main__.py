@@ -38,7 +38,7 @@ def connect_dbs(setup):
     return databases
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser("onitu")
+    parser = argparse.ArgumentParser("thumail")
     parser.add_argument(
         '--setup', default='setup.json',
         help="A JSON file with DB's configuration (defaults to setup.json)"
