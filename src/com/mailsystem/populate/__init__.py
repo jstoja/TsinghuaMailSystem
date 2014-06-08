@@ -1,4 +1,6 @@
-# encoding=utf8
+#!/usr/bin/env python
+# coding: utf-8
+
 '''
 Created on 8 juin 2014
 
@@ -29,17 +31,17 @@ states = [
     "Waiting at address",
     "Received"
 ]
-        
+
 chinese_names = [
     "张伟", "王伟","王芳","李伟","王秀英","李秀英","李娜","张秀英","刘伟","张敏",
     "李静","张丽","王静","王丽","李强","张静","李敏","王敏","王磊","李军","刘洋",
     "王勇","张勇","王艳","李杰","张磊","王强","王军","张杰","李娟","张艳","张涛",
     "王涛","李明","李艳","王超","李勇","王娟","刘杰","王秀兰","李霞","刘敏","张军",
     "李丽","张强","王平","王刚","王杰","李桂英","刘芳"
-] 
+]
 
 adresses = [
-    Address(name="Zijing 1"), 
+    Address(name="Zijing 1"),
     Address(name="Zijing 2"),
     Address(name="Zijing 3"),
     Address(name="Zijing 4"),
@@ -95,14 +97,14 @@ def populate_user_db(user_database, session):
             for adress in adresses:
                 session.add(UserAddress(address=adress, user=u))
     return users
-    
+
 
 def create_states(db):
     s = db.session()
     for state in states:
         s.add(State(name=state))
     s.commit()
-    
+
 def add_mail(db_sender, db_receiver, sender, receiver, state):
     s = db_sender.session()
     s.add(Mail(state=state, destination=receiver, sender=sender))
@@ -138,7 +140,7 @@ def populate_departments_dbs(departments_dbs, users):
 #             s.commit()
 #             s = receiver_db.session()
 #             s.add(Mail(state=state, destination=receiver, sender=sender))
-#             s.commit() 
+#             s.commit()
             #m = add_mail(sender_db, receiver_db, adresses[0], adresses[1], State(name=states[0]))
 #             for state in states:
 #                 if state == states[0]:
