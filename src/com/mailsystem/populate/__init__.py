@@ -129,7 +129,7 @@ def populate_departments_dbs(departments_dbs, ids):
                 ids['state'][state] = StateService.add(departments_dbs[db_name], state)
     for sender in ids['user']:
         for receiver in ids['user']:
-            MailService.add(departments_dbs['users'], 0, ids['user'][sender], ids['user'][receiver])
+            MailService.add(departments_dbs, 0, ids['user'][sender], ids['user'][receiver])
             #print sender.department.name, "  --  ", receiver.department.name
             #print UserAddress.address.values()
             #sender_db = departments_dbs[sender.department.name]

@@ -4,6 +4,7 @@ Created on 8 juin 2014
 @author: Romain
 '''
 
+import uuid
 from src.com.mailsystem.orm import Mail
 from src.com.mailsystem.services.UserAddressService import UserAddressService
 from src.com.mailsystem.services.MailStateHistoryService import MailStateHistoryService
@@ -25,9 +26,8 @@ class MailService:
         return databases[ua.user.department.name]
     
     @staticmethod
-    def __genBarcode():
-        #TODO
-        return "01-5901234123457"
+    def __genBarcode(database_id):
+        return (str(database_id) + "-" + str(uuid.uuid4()))
     
     @staticmethod
     def add(databases, idstate, idsenderua, idreceiverua):        
@@ -36,7 +36,7 @@ class MailService:
         if db_receiver is None or db_receiver is None:
             return None
         
-        generatedBarcode = MailService.__genBarcode()
+        generatedBarcode = MailService.__genBarcode("01")
         insertStatement = db_sender.statement(Mail, "insert")\
                                     .values(barcode = generatedBarcode,
                                             idstate = idstate,
