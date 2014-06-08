@@ -19,8 +19,8 @@ class Database:
         self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
         
         #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False)
-        #self.engine = create_engine('sqlite:///' + name, encoding='utf8')
-        self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
+        self.engine = create_engine('sqlite:///' + name, encoding='utf8')
+        #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         Schema.create(self.engine)
