@@ -15,9 +15,6 @@ def read_config(setup_file):
     try:
         with open(setup_file) as f:
             setup = json.load(f)
-    except json.JSONDecodeError as e:
-        print("Error parsing '{}' : {}", setup_file, e)
-        sys.exit(1)
     except Exception as e:
         print(
             "Can't process setup file '{}' : {}", setup_file, e
@@ -36,7 +33,7 @@ def connect_dbs(setup):
         setup['users']['port']
     )
     for db in setup['departments']:
-        infos = setup[db]
+        infos = setup['departments'][db]
         if db not in databases:
             databases[db] = Database(
                 db,
