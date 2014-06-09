@@ -5,6 +5,7 @@ from json import dumps
 
 from bottle import static_file, response, Bottle, request, hook
 from src.com.mailsystem.services.DepartmentService import DepartmentService
+from src.com.mailsystem.services.UserAddressService import UserAddressService
 from src.com.mailsystem.services.UserService import UserService
 from src.com.mailsystem.services.MailService import MailService
 
@@ -44,11 +45,19 @@ def get_mail_id(barcode):
 def get_mail_barcode(barcode):
     db = MailService.findDatabaseForBarcode(app.dbs, barcode)
     mail = MailService.selectByBarcode(db, barcode)
+    ua_sender = UserAddressService.selectById(app.dbs['users'],
+                                              mail.idsenderuseraddress)
+    ua_receiver = UserAddressService.selectById(app.dbs['users'],
+                                                mail.idreceiveruseraddress)
     m = {
         'barcode': mail.barcode,
-        'Sender': mail.idsenderuseraddress,
-        'Receiver': mail.idreceiveruseraddress,
-        'State': mail.idstate
+        'Sender_id': mail.idsenderuseraddress,
+        'Sender': ua_sender.user.name,
+        'Receiver_id': mail.idreceiveruseraddress,
+        'Receiver': ua_receiver.user.name,
+        'State': mail.idstate,
+        'email_sender': ua_sender.user.email,
+        'email_receiver': ua_receiver.user.email
     }
     return m
 
