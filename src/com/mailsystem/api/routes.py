@@ -23,10 +23,30 @@ def enable_cors():
     r.content_type = 'text/json; charset=utf-8'
 
 
-@app.route('/test')
-def server_static():
+@app.route('/web/img/:filename')
+def server_web_img(filename):
+    return static_file(filename, root='./web/img')
+
+
+@app.route('/web/js/:filename')
+def server_web_js(filename):
+    return static_file(filename, root='./web/js')
+
+
+@app.route('/web/css/:filename')
+def server_web_css(filename):
+    return static_file(filename, root='./web/css')
+
+
+@app.route('/web/:filename')
+def server_web(filename):
+    return static_file(filename, root='./web')
+
+
+@app.route('/data/:filename')
+def server_static(filename):
     response.content_type = 'text/json; charset=utf-8'
-    return static_file("mini-last.json", root='./data')
+    return static_file(filename, root='./data')
 
 
 @app.route('/mail/id/:barcode')

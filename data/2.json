@@ -50,4 +50,15 @@
 		"text": "In C building",
 		"status": "Arrived"
 	}]
+}, {
+	"sender": "李静",
+	"receiver": "李静",
+	"date": "10 May 2014",
+	"history": [{
+		"text": "Sent from me",
+		"status": "Sent"
+	}, {
+		"text": "In my room",
+		"status": "Arrived"
+	}]
 }]

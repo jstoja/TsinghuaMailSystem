@@ -5,10 +5,16 @@
 		var mailbox = this;
 		mailbox.mails = [];
 		mailbox.currentMail = {};
+		mailbox.urls = ['/data/1.json', '/data/2.json'];
 
-		$http.get('/data/1.json').success(function(data){
-			mailbox.mails = data;
-			mailbox.currentMail = data[0];
-		});
+
+		this.getMails = function(url) {
+			$http.get(url).success(function(data){
+				mailbox.mails = data;
+				mailbox.currentMail = data[0];
+			});
+		};
+
+		this.getMails("/data/1.json");
 	}]);
 })();

@@ -20,6 +20,8 @@
           </div>
         </div>
         <div class='row main-ui' ng-controller='MailboxController as mailbox'>
+		<button ng-click="mailbox.getMails(mailbox.urls[0])">User1</button>
+		<button ng-click="mailbox.getMails(mailbox.urls[1])">User2</button>
           <div class='col-xs-3'>
             <ul>
               <li class='list-box' ng-repeat='mail in mailbox.mails'>
