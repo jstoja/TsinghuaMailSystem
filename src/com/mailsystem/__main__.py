@@ -8,6 +8,7 @@ import argparse
 from bottle import run
 
 import src.com.mailsystem.api.routes as api
+import src.com.mailsystem.codes as codes
 from src.com.mailsystem.orm.Database import Database
 from src.com.mailsystem.populate import populate_db
 
@@ -62,7 +63,9 @@ if __name__ == '__main__':
 
     setup = read_config(setup_file)
     dbs = connect_dbs(setup)
+    api.app.dbs = dbs
+    codes.codes = setup['codes']
+    codes.rev_codes = {v: k for k, v in setup['codes'].items()}
     if populate:
         populate_db(dbs)
-    api.app.dbs = dbs
     run(api.app, host='0.0.0.0', port=8080)

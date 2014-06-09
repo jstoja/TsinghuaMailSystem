@@ -27,9 +27,7 @@ class Database:
         except:
             pass
         #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, encoding='utf8')
-
-        #self.engine = create_engine('sqlite:///' + name, encoding='utf8')
-
+        self.engine = create_engine('sqlite:///' + name, encoding='utf8')
         #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
 
         self.session = sessionmaker()

@@ -6,6 +6,42 @@
           "port": 3306
   },
     "departments": {
+          "PHY": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "CH": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "LAW": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "FI": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "CS": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
+          "ECO": {
+                "user": "root",
+                "password": "root",
+                "host": "localhost",
+                "port": 3306
+          },
           "ART": {
                 "user": "root",
                 "password": "root",
@@ -18,13 +54,7 @@
                 "host": "localhost",
                 "port": 3306
           },
-          "CS": {
-                "user": "root",
-                "password": "root",
-                "host": "localhost",
-                "port": 3306
-          },
-          "LAW": {
+          "ADM": {
                 "user": "root",
                 "password": "root",
                 "host": "localhost",
@@ -32,14 +62,14 @@
           }
     },
     "codes": {
-          "PHY": 	"01",
-          "CH": 	"02",
-          "LAW": 	"03",
-          "FI": 	"04",
-          "CS": 	"05",
-          "ECO": 	"06",
-          "ART": 	"07",
-          "ENV": 	"08",
-          "ADM": 	"09"
+          "01":		"PHY",
+          "02": 	"CH",
+          "03": 	"LAW",
+          "04": 	"FI",
+          "05": 	"CS",
+          "06": 	"ECO",
+          "07": 	"ART",
+          "08": 	"ENV",
+          "09": 	"ADM"
     }
 }

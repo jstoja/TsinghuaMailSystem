@@ -7,15 +7,15 @@ Created on 8 juin 2014
 @author: julienbordellier
 '''
 
+import random
 from datetime import date
 from src.com.mailsystem.orm import Department, User, Address, UserAddress, State, Mail, MailStateHistory
 from src.com.mailsystem.orm.Database import Database
-from mercurial.revset import destination
 from src.com.mailsystem.services.UserService import UserService
 from src.com.mailsystem.services.AddressService import AddressService
 from src.com.mailsystem.services.DepartmentService import DepartmentService
-from src.com.mailsystem.services.UserAddressService import UserAddressService 
-from src.com.mailsystem.services.StateService import StateService 
+from src.com.mailsystem.services.UserAddressService import UserAddressService
+from src.com.mailsystem.services.StateService import StateService
 from src.com.mailsystem.services.MailService import MailService
 
 departments = [
@@ -96,8 +96,11 @@ def populate_user_db(user_database, ids):
             mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
             ids['user'][username] = UserService.add(user_database, email_shift, username.decode('utf8'), mail, ids['department'][department]) 
             email_shift = email_shift + 1
-            for adress in adresses:
-                ids['useraddress'].append(UserAddressService.add(user_database, ids['address'][adress], ids['user'][username]))
+            for _ in random.randint(1, 3):
+                addr_num = random.randint(0, len(adresses) - 1)
+                ids['useraddress'].append(UserAddressService.add(user_database, ids['address'][adresses[addr_num]], ids['user'][username]))
+#             for adress in adresses:
+#                 ids['useraddress'].append(UserAddressService.add(user_database, ids['address'][adress], ids['user'][username]))
 
 def populate_departments_dbs(departments_dbs, ids):
     ids['state'] = {}

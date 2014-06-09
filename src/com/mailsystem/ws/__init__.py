@@ -14,6 +14,8 @@ db_d1 = Database('mailsystem_d1')
 databases = { 'users': db_users,
               'D1': db_d1 }
 
+codes = { "01": "D1" }
+
 a1 = AddressService.add(db_users, "A1")
 a2 = AddressService.add(db_users, "A2")
 d1 = DepartmentService.add(db_users, "D1")
@@ -32,9 +34,9 @@ print u1
 print ua1
 print bc
 
-print MailService.update(databases, ua1, bc, s2)
-print MailService.update(databases, ua1, bc, s3)
-print MailService.update(databases, ua1, bc, s1)
+print MailService.update(databases, codes, bc, s2)
+print MailService.update(databases, codes, bc, s3)
+print MailService.update(databases, codes, bc, s1)
 
 #db1.update(Department, Department.__table__.c.idDepartment == d1.idDepartment, name = "CS")
 #db1.insert(UserAddress, idAddress = 1, idUser = 1)
