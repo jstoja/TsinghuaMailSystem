@@ -1,0 +1,53 @@
+[{
+	"sender": "张丽",
+	"receiver": "李静",
+	"date": "21 May 2014",
+	"history": [{
+		"text": "Sent from Zijing 42",
+		"status": "Sent"
+	}]
+}, {
+	"sender": "王静",
+	"receiver": "李静",
+	"date": "12 May 2014",
+	"history": [{
+		"text": "Sent from Zijing 21",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "王丽",
+	"receiver": "李静",
+	"date": "11 May 2014",
+	"history": [{
+		"text": "Sent from Zijing 21",
+		"status": "Sent"
+	}, {
+		"text": "In Zijing 14",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "李强",
+	"receiver": "李静",
+	"date": "11 May 2014",
+	"history": [{
+		"text": "Sent from Lab of CS",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "李军",
+	"receiver": "李静",
+	"date": "10 May 2014",
+	"history": [{
+		"text": "Sent from Zijing 14",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}]

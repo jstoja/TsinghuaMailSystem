@@ -1,0 +1,53 @@
+[{
+	"sender": "王伟",
+	"receiver": "张伟",
+	"date": "21 Janvier 2013",
+	"history": [{
+		"text": "Sent from Zijing 42",
+		"status": "Sent"
+	}]
+}, {
+	"sender": "王芳",
+	"receiver": "张伟",
+	"date": "12 Janvier 2013",
+	"history": [{
+		"text": "Sent from Zijing 21",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "李伟",
+	"receiver": "张伟",
+	"date": "11 Janvier 2013",
+	"history": [{
+		"text": "Sent from Zijing 21",
+		"status": "Sent"
+	}, {
+		"text": "In Zijing 14",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "王秀英",
+	"receiver": "张伟",
+	"date": "11 Janvier 2013",
+	"history": [{
+		"text": "Sent from Lab of CS",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}, {
+	"sender": "李娜",
+	"receiver": "张伟",
+	"date": "10 Janvier 2013",
+	"history": [{
+		"text": "Sent from Zijing 14",
+		"status": "Sent"
+	}, {
+		"text": "In C building",
+		"status": "Arrived"
+	}]
+}]

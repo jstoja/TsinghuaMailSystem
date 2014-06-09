@@ -15,6 +15,11 @@ class MailService:
     def selectById(db_department, idmail):
         return db_department.session().query(Mail).get(idmail)
 
+    #@staticmethod
+    #def selectByReceiverUserId(databases, receiver_id):
+        #ua = UserAddressService.listByUser(databases)
+        
+
     @staticmethod
     def selectByBarcode(db_department, barcode):
         return db_department.session().query(Mail).filter(Mail.barcode == barcode).scalar()

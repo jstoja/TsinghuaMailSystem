@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//data/1.json=UTF-8
+encoding//data/2.json=UTF-8
 encoding//src/com/mailsystem/__main__.py=utf-8
 encoding//src/com/mailsystem/api/routes.py=utf-8
 encoding//src/com/mailsystem/populate/__init__.py=utf-8
