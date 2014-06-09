@@ -21,6 +21,7 @@ class Database:
 
         self.engine = create_engine('sqlite:///' + name, encoding='utf8')
         #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port))
+        #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
         try:
             self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
         except:

@@ -23,6 +23,7 @@ class MailService:
         ua = UserAddressService.selectById(databases['users'], iduseraddress)
         if ua is None:
             return None
+        #print ua.user.department.name
         return databases[ua.user.department.name]
     
     @staticmethod
@@ -30,7 +31,7 @@ class MailService:
         return (str(database_id) + "-" + str(uuid.uuid4()))
     
     @staticmethod
-    def add(databases, idstate, idsenderua, idreceiverua):        
+    def add(databases, idstate, idsenderua, idreceiverua):
         db_sender = MailService.__findDatabaseForUserAddress(databases, idsenderua)
         db_receiver = MailService.__findDatabaseForUserAddress(databases, idreceiverua)
         if db_receiver is None or db_receiver is None:
