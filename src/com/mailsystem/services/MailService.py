@@ -63,8 +63,8 @@ class MailService:
         return generatedBarcode
 
     @staticmethod
-    def update(databases, codes, barcode, idstate):
-        db_sender = MailService.findDatabaseForBarcode(databases, codes, barcode)
+    def update(databases, barcode, idstate):
+        db_sender = MailService.findDatabaseForBarcode(databases, barcode)
         if db_sender is None:
             return None
 
@@ -72,8 +72,8 @@ class MailService:
         if currentMail is None:
             return None
 
-        db_sender = MailService.__findDatabaseForUserAddress(databases, currentMail.idsenderuseraddress)
-        db_receiver = MailService.__findDatabaseForUserAddress(databases, currentMail.idreceiveruseraddress)
+        db_sender_name, db_sender = MailService.__findDatabaseForUserAddress(databases, currentMail.idsenderuseraddress)
+        db_receiver_name, db_receiver = MailService.__findDatabaseForUserAddress(databases, currentMail.idreceiveruseraddress)
         if db_sender is None or db_receiver is None:
             return None
 
