@@ -22,12 +22,12 @@ departments = [
     "LAW",
     "CS",
     "ART",
-    "ENV"#,
-#     Department(name="PHY"),
-#     Department(name="CH"),
-#     Department(name="FI"),
-#     Department(name="ECO"),
-#     Department(name="ADM")
+    "ENV",
+    "PHY",
+    "CH",
+    "FI",
+    "ECO",
+    "ADM"
 ]
 #"physics", "chemistry", "law", "finance", "computer science", "economy", "art", "environment", "administration"]
 
@@ -96,7 +96,7 @@ def populate_user_db(user_database, ids):
             mail = "w_" + str(email_shift) + "@mail.tsinghua.edu.cn"
             ids['user'][username] = UserService.add(user_database, email_shift, username.decode('utf8'), mail, ids['department'][department]) 
             email_shift = email_shift + 1
-            for _ in random.randint(1, 3):
+            for _ in range(random.randint(1, 3)):
                 addr_num = random.randint(0, len(adresses) - 1)
                 ids['useraddress'].append(UserAddressService.add(user_database, ids['address'][adresses[addr_num]], ids['user'][username]))
 #             for adress in adresses:
@@ -111,9 +111,12 @@ def populate_departments_dbs(departments_dbs, ids):
             for state in states:
                 ids['state'][state] = StateService.add(departments_dbs[db_name], state)
     for idsender in ids['useraddress']:
-        for idreceiver in ids['useraddress']:
-            #print ids['useraddress'][sender], ids['useraddress'][receiver]
-            MailService.add(departments_dbs, 0, idsender, idreceiver)
+        for _ in range(50):
+            idreceiver = random.randint(0, len(ids['useraddress']) - 1)
+            MailService.add(departments_dbs, 0, idsender, ids['useraddress'][idreceiver])        
+#         for idreceiver in ids['useraddress']:
+#             #print ids['useraddress'][sender], ids['useraddress'][receiver]
+#             MailService.add(departments_dbs, 0, idsender, idreceiver)
 
 def populate_db(databases):
     ids = {}
