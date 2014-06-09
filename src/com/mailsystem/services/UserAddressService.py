@@ -5,11 +5,17 @@ Created on 8 juin 2014
 '''
 
 from src.com.mailsystem.orm import UserAddress
+from src.com.mailsystem.services.UserService import UserService
 
 class UserAddressService:    
     @staticmethod
     def selectById(db_users, idua):
         return db_users.session().query(UserAddress).get(idua)
+    
+    @staticmethod
+    def listByUser(db_users, iduser):
+        user = UserService.selectById(db_users, iduser)
+        return user.addresses
     
     @staticmethod
     def add(db_users, idaddress, iduser):

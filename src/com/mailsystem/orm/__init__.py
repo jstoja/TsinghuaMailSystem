@@ -50,7 +50,7 @@ class State(Base):
 class Mail(Base):
     __tablename__ = 'mail'
     idmail = Column(Integer, Sequence('mail_id_seq'), primary_key=True)
-    barcode = Column(String(20), unique=True)
+    barcode = Column(String(64), unique=True)
     idstate = Column(Integer, nullable=False)
     #idstate = Column(Integer, ForeignKey('state.idstate'), nullable=False)
     #state = relationship(State)
