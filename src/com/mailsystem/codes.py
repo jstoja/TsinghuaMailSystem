@@ -1,0 +1,2 @@
+codes = {}
+rev_codes = {}
