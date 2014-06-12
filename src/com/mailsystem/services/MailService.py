@@ -34,7 +34,8 @@ class MailService:
     @staticmethod
     def selectByUserAdresses(db_department, addresses):
         s = db_department.session()
-        ret = db_department.session().query(Mail)\
+        ret = s.query(Mail)\
+            .options(eagerload_all('statehistory'))\
             .filter(Mail.idreceiveruseraddress.in_(addresses)).all()
         s.close()
         return ret

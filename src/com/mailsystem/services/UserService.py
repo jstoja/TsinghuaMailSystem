@@ -19,7 +19,7 @@ class UserService:
     @staticmethod
     def selectByStudentnumber(db_users, studentnumber):
         s = db_users.session()
-        ret = db_users.session().query(User).filter(User.__table__.c.studentnumber == studentnumber).one()
+        ret = s.options(eagerload_all('addresses')).query(User).filter(User.__table__.c.studentnumber == studentnumber).one()
         s.close()
         return ret
 
