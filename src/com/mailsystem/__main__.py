@@ -29,20 +29,14 @@ def connect_dbs(setup):
     databases = {}
     databases['users'] = Database(
         'thumailusers',
-        setup['users']['user'],
-        setup['users']['password'],
-        setup['users']['host'],
-        setup['users']['port']
+        setup['users']['uri']
     )
     for db in setup['departments']:
         infos = setup['departments'][db]
         if db not in databases:
             databases[db] = Database(
                 db,
-                infos['user'],
-                infos['password'],
-                infos['host'],
-                infos['port']
+                infos['uri']
             )
     return databases
 

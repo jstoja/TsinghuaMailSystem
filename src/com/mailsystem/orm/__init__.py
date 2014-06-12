@@ -19,9 +19,7 @@ class User(Base):
     #iddepartment = Column(Integer, nullable=False)
     iddepartment = Column(Integer, ForeignKey('department.iddepartment'), nullable=False)
     department = relationship(Department,
-                              backref=backref('users',
-                                              uselist=True,
-                                              cascade='all'))
+                              lazy=False)
 
 class Address(Base):
     __tablename__ = 'address'
@@ -34,11 +32,11 @@ class UserAddress(Base):
     #idaddress = Column(Integer, nullable=False)
     idaddress = Column(Integer, ForeignKey('address.idaddress'), nullable=False)
     address = relationship(Address,
-                           backref=backref('addresses',
-                                           uselist=True))
+                           lazy=False)
     #iduser = Column(Integer, nullable=False)
     iduser = Column(Integer, ForeignKey('userthu.iduserthu'), nullable=False)
     user = relationship(User,
+                        lazy=False,
                         backref=backref('addresses',
                                         uselist=True))
  
@@ -68,6 +66,7 @@ class MailStateHistory(Base):
     #state = relationship(State)
     idmail = Column(Integer, ForeignKey('mail.idmail'), primary_key=True)
     mail = relationship(Mail,
+                        lazy=False,
                         backref=backref("statehistory",
                                         uselist=True,
                                         cascade="all, delete-orphan"))

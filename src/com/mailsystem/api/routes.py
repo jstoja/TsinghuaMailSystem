@@ -65,20 +65,23 @@ def get_mail_id(barcode):
 def get_mail_barcode(barcode):
     db = MailService.findDatabaseForBarcode(app.dbs, barcode)
     mail = MailService.selectByBarcode(db, barcode)
+    state = mail.statehistory
     ua_sender = UserAddressService.selectById(app.dbs['users'],
                                               mail.idsenderuseraddress)
     ua_receiver = UserAddressService.selectById(app.dbs['users'],
                                                 mail.idreceiveruseraddress)
     m = {
         'barcode': mail.barcode,
-        'Sender_id': mail.idsenderuseraddress,
-        'Sender': ua_sender.user.name,
-        'Receiver_id': mail.idreceiveruseraddress,
-        'Receiver': ua_receiver.user.name,
-        'State': mail.idstate,
-        'email_sender': ua_sender.user.email,
-        'email_receiver': ua_receiver.user.email
+        'sender': ua_sender.user.name,
+        'receiver': ua_receiver.user.name,
+        'date': str(state[0].date),
+        'history': [
+            {'status': s.idstate, 'text': str(s.date)} for s in state
+        ]
+
     }
+    for d in mail.statehistory:
+        print d.date
     return m
 
 

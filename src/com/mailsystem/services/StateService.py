@@ -9,11 +9,17 @@ from src.com.mailsystem.orm import State
 class StateService:
     @staticmethod
     def listAll(db_users):
-        return db_users.session().query(State).all()
+        s = db_users.session()
+        ret = s.query(State).all()
+        s.close()
+        return ret
     
     @staticmethod
     def selectById(db_users, idstate):
-        return db_users.session().query(State).get(idstate)
+        s = db_users.session()
+        ret = s.query(State).get(idstate)
+        s.close()
+        return ret
     
     @staticmethod
     def add(db_users, name):

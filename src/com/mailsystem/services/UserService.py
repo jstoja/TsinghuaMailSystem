@@ -3,11 +3,17 @@ from src.com.mailsystem.orm import User
 class UserService:
     @staticmethod
     def listAll(db_users):
-        return db_users.session().query(User).all()
+        s = db_users.session()
+        ret = s.query(User).all()
+        s.close()
+        return ret
 
     @staticmethod
     def selectById(db_users, iduserthu):
-        return db_users.session().query(User).get(iduserthu)
+        s = db_users.session()
+        ret = s.query(User).get(iduserthu)
+        s.close()
+        return ret
 
     @staticmethod
     def add(db_users, studentnumber, name, email, iddepartment):

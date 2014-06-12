@@ -13,7 +13,10 @@ from src.com.mailsystem.services.MailStateHistoryService import MailStateHistory
 class MailService:
     @staticmethod
     def selectById(db_department, idmail):
-        return db_department.session().query(Mail).get(idmail)
+        s = db_department.session()
+        ret = s.query(Mail).get(idmail)
+        s.close()
+        return ret
 
     #@staticmethod
     #def selectByReceiverUserId(databases, receiver_id):
@@ -22,7 +25,10 @@ class MailService:
 
     @staticmethod
     def selectByBarcode(db_department, barcode):
-        return db_department.session().query(Mail).filter(Mail.barcode == barcode).scalar()
+        s = db_department.session()
+        ret = s.query(Mail).filter(Mail.barcode == barcode).scalar()
+        s.close()
+        return ret
 
     @staticmethod
     def __findDatabaseForUserAddress(databases, iduseraddress):
