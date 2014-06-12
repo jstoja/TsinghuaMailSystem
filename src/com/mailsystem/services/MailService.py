@@ -32,8 +32,11 @@ class MailService:
 
     @staticmethod
     def selectByUserAdresses(db_department, addresses):
-        return db_department.session().query(Mail)\
+        s = db_department.session()
+        ret = db_department.session().query(Mail)\
             .filter(Mail.idreceiveruseraddress.in_(addresses)).all()
+        s.close()
+        return ret
 
     @staticmethod
     def __findDatabaseForUserAddress(databases, iduseraddress):

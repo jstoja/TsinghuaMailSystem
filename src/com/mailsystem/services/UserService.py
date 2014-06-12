@@ -17,7 +17,10 @@ class UserService:
 
     @staticmethod
     def selectByStudentnumber(db_users, studentnumber):
-        return db_users.session().query(User).filter(User.__table__.c.studentnumber == studentnumber).one()
+        s = db_users.session()
+        ret = db_users.session().query(User).filter(User.__table__.c.studentnumber == studentnumber).one()
+        s.close()
+        return ret
 
     @staticmethod
     def add(db_users, studentnumber, name, email, iddepartment):
