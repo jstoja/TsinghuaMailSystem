@@ -22,12 +22,20 @@ class MailService:
     #@staticmethod
     #def selectByReceiverUserId(databases, receiver_id):
         #ua = UserAddressService.listByUser(databases)
-        
+
 
     @staticmethod
     def selectByBarcode(db_department, barcode):
         s = db_department.session()
         ret = s.query(Mail).options(eagerload_all('statehistory')).filter(Mail.barcode == barcode).scalar()
+        s.close()
+        return ret
+
+    @staticmethod
+    def selectByUserAdresses(db_department, addresses):
+        s = db_department.session()
+        ret = db_department.session().query(Mail)\
+            .filter(Mail.idreceiveruseraddress.in_(addresses)).all()
         s.close()
         return ret
 

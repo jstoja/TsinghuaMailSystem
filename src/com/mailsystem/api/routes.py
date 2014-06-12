@@ -3,6 +3,7 @@
 
 from json import dumps
 
+import src.com.mailsystem.codes as codes
 from bottle import static_file, response, Bottle, request, hook
 from src.com.mailsystem.services.DepartmentService import DepartmentService
 from src.com.mailsystem.services.UserAddressService import UserAddressService
@@ -92,7 +93,18 @@ def get_dep_mails(id):
 
 @app.route('/mail/user/:id')
 def get_user_mails(id):
-    pass
+    u = UserService.selectByStudentnumber(app.dbs['users'], id)
+    dep = u.iddepartment
+    addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
+    db = app.dbs[codes.codes['0{}'.format(dep)]]
+    mails = MailService.selectByUserAdresses(
+        db,
+        [a.iduseraddress for a in addresses]
+    )
+    j = []
+    for m in mails:
+        j.append(get_mail_barcode(m.barcode))
+    return j
 
 
 @app.route('/mail/update/:id', method='POST')
