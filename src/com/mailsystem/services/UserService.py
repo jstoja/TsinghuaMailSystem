@@ -1,3 +1,4 @@
+from sqlalchemy.orm import eagerload_all
 from src.com.mailsystem.orm import User
 
 class UserService:
@@ -11,7 +12,7 @@ class UserService:
     @staticmethod
     def selectById(db_users, iduserthu):
         s = db_users.session()
-        ret = s.query(User).get(iduserthu)
+        ret = s.query(User).options(eagerload_all('addresses')).get(iduserthu)
         s.close()
         return ret
 

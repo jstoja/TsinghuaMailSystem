@@ -19,11 +19,12 @@ class Database:
         self.recovering = False
         self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
 
-        self.engine = create_engine(uri, encoding='utf8')
-        try:
-            self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
-        except:
-            pass
+        if uri.split(':')[0].split('+')[0] in ["mysql", "postgresql"]:
+            self.engine = create_engine(uri, encoding='utf8')
+            try:
+                self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
+            except:
+                pass
         self.engine = create_engine(uri + '/' + name, encoding='utf8')
 
         self.session = sessionmaker(expire_on_commit=False)
@@ -63,6 +64,8 @@ class Database:
         if self.mustRecover and self.recovering == False:
             self.__recover()
             if self.mustRecover:
+                print(self.logRegex.sub(r":\1", str(statement)), file=self.logfile)
+                print(str(statement.compile().params), file=self.logfile)
                 return None
         try:
             conn = self.engine.connect()

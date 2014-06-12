@@ -32,6 +32,8 @@ bc = MailService.add(databases, s1, ua1, ua2)
 
 las = UserAddressService.listByUser(db_users, u1)
 
+selectedMail = MailService.selectByBarcode(databases['D1'], bc)
+
 print las
 
 print a1
@@ -40,6 +42,7 @@ print s1
 print u1
 print ua1
 print bc
+print selectedMail
 
 print MailService.update(databases, bc, s2)
 print MailService.update(databases, bc, s3)
