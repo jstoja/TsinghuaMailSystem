@@ -104,7 +104,8 @@ def get_user_mails(id):
     j = []
     for m in mails:
         j.append(get_mail_barcode(m.barcode))
-    return j
+    response.content_type = 'text/json; charset=utf-8'
+    return dumps(j)
 
 
 @app.route('/mail/update/:id', method='POST')
