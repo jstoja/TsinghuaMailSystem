@@ -10,7 +10,10 @@ from src.com.mailsystem.services.UserService import UserService
 class UserAddressService:    
     @staticmethod
     def selectById(db_users, idua):
-        return db_users.session().query(UserAddress).get(idua)
+        s = db_users.session()
+        ret = s.query(UserAddress).get(idua)
+        s.close()
+        return ret
     
     @staticmethod
     def listByUser(db_users, iduser):

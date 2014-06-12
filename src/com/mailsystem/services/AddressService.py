@@ -9,11 +9,17 @@ from src.com.mailsystem.orm import Address
 class AddressService:
     @staticmethod
     def listAll(db_users):
-        return db_users.session().query(Address).all()
+        s = db_users.session()
+        ret = s.query(Address).all()
+        s.close()
+        return ret
     
     @staticmethod
     def selectById(db_users, idadd):
-        return db_users.session().query(Address).get(idadd)
+        s = db_users.session()
+        ret = s.query(Address).get(idadd)
+        s.close()
+        return ret
     
     @staticmethod
     def add(db_users, name):

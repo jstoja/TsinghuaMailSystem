@@ -12,25 +12,21 @@ from src.com.mailsystem.orm import Schema
 import sys, os, ast, re
 
 class Database:
-    def __init__(self, name, user = 'root', password = 'root', host = 'localhost', port = 3306):
+    def __init__(self, name, uri = "mysql+mysqlconnector://root:root@localhost:3306"):
         self.name = name
         self.logfile = open(name + '.logfile', 'a+')
         self.mustRecover = os.stat(name + '.logfile').st_size > 0
         self.recovering = False
         self.logRegex = re.compile(r"\%\(([^\)]+)\)s")
 
-        self.engine = create_engine('sqlite:///' + name, encoding='utf8')
-        #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port))
-        #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
+        self.engine = create_engine(uri, encoding='utf8')
         try:
             self.engine.execute("CREATE DATABASE IF NOT EXISTS `" + name + "` CHARACTER SET utf8 COLLATE utf8_general_ci") #create db
         except:
             pass
-        #self.engine = create_engine('mysql+mysqlconnector://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, encoding='utf8')
-        self.engine = create_engine('sqlite:///' + name, encoding='utf8')
-        #self.engine = create_engine('postgresql+pg8000://' + user + ':' + password + '@' + host +':' + str(port) + '/' + name, echo = False, encoding='utf8')
+        self.engine = create_engine(uri + '/' + name, encoding='utf8')
 
-        self.session = sessionmaker()
+        self.session = sessionmaker(expire_on_commit=False)
         self.session.configure(bind=self.engine)
         Schema.create(self.engine)
 

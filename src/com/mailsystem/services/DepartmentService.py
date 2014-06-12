@@ -9,11 +9,17 @@ from src.com.mailsystem.orm import Department
 class DepartmentService:
     @staticmethod
     def listAll(db_users):
-        return db_users.session().query(Department).all()
+        s = db_users.session()
+        ret = s.query(Department).all()
+        s.close()
+        return ret
     
     @staticmethod
     def selectById(db_users, iddep):
-        return db_users.session().query(Department).get(iddep)
+        s = db_users.session()
+        ret = s.query(Department).get(iddep)
+        s.close()
+        return ret
     
     @staticmethod
     def add(db_users, name):

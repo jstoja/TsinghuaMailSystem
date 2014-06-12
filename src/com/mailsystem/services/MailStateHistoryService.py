@@ -9,7 +9,10 @@ from src.com.mailsystem.orm import MailStateHistory
 class MailStateHistoryService:
     @staticmethod
     def selectById(db_department, idmail):
-        return db_department.session().query(MailStateHistory).get(idmail)
+        s = db_department.session()
+        ret = s.query(MailStateHistory).get(idmail)
+        s.close()
+        return ret
     
     @staticmethod
     def add(db_department, idstate, idmail):        
