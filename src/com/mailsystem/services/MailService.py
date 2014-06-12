@@ -5,6 +5,7 @@ Created on 8 juin 2014
 '''
 
 import uuid
+from sqlalchemy.orm import eagerload_all
 import src.com.mailsystem.codes as codes
 from src.com.mailsystem.orm import Mail
 from src.com.mailsystem.services.UserAddressService import UserAddressService
@@ -14,19 +15,28 @@ class MailService:
     @staticmethod
     def selectById(db_department, idmail):
         s = db_department.session()
-        ret = s.query(Mail).get(idmail)
+        ret = s.query(Mail).options(eagerload_all('statehistory')).get(idmail)
         s.close()
         return ret
 
     #@staticmethod
     #def selectByReceiverUserId(databases, receiver_id):
         #ua = UserAddressService.listByUser(databases)
-        
+
 
     @staticmethod
     def selectByBarcode(db_department, barcode):
         s = db_department.session()
-        ret = s.query(Mail).filter(Mail.barcode == barcode).scalar()
+        ret = s.query(Mail).options(eagerload_all('statehistory')).filter(Mail.barcode == barcode).scalar()
+        s.close()
+        return ret
+
+    @staticmethod
+    def selectByUserAdresses(db_department, addresses):
+        s = db_department.session()
+        ret = s.query(Mail)\
+            .options(eagerload_all('statehistory'))\
+            .filter(Mail.idreceiveruseraddress.in_(addresses)).all()
         s.close()
         return ret
 
