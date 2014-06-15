@@ -20,13 +20,15 @@ with pip.
 
 ## Usage
 
-Populate the database:
+Populate the database (it may take more than 5 minutes):
 
 ```python -m src.com.mailsystem --populate```
 
 Launch TsinghuaMailSystem:
 
 ```python -m src.com.mailsystem```
+
+Then you can go to the web interface on http://localhost:8080/
 
 ```
 usage: python -m src.com.mailsystem [-h] [--setup SETUP] [--populate]
