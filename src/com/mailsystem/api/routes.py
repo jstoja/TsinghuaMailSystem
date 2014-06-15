@@ -13,6 +13,7 @@ from src.com.mailsystem.services.MailService import MailService
 
 app = Bottle()
 
+
 @hook('after_request')
 def enable_cors():
     r = response
@@ -22,23 +23,27 @@ def enable_cors():
     ' Content-Type, Accept'
     r.content_type = 'text/json; charset=utf-8'
 
+
 @app.route('/')
 @app.route('/:filename')
-def server_web_img(filename = 'index.html'):
+def server_web_img(filename='index.html'):
     return static_file(filename, root='./web/')
+
 
 @app.route('/img/:filename')
 def server_web_img2(filename):
     return static_file(filename, root='./web/img/')
-  
+
+
 @app.route('/js/:filename')
 def server_web_js(filename):
     return static_file(filename, root='./web/js')
- 
- 
+
+
 @app.route('/css/:filename')
 def server_web_css(filename):
     return static_file(filename, root='./web/css')
+
 
 @app.route('/data/:filename')
 def server_static(filename):
@@ -87,17 +92,56 @@ def get_dep_mails(id):
     pass
 
 
+@app.route('/mail/user/:id/sent')
+def get_user_mails_sent(id):
+    u = UserService.selectByStudentnumber(app.dbs['users'], id)
+    dep = u.iddepartment
+    addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
+    db = app.dbs[codes.codes['0{}'.format(dep)]]
+    j = []
+    mails = MailService.selectBySenderUserAdresses(
+        db,
+        [a.iduseraddress for a in addresses]
+    )
+    for m in mails:
+        j.append(get_mail_barcode(m.barcode))
+    response.content_type = 'text/json; charset=utf-8'
+    return dumps(j)
+
+
+@app.route('/mail/user/:id/received')
+def get_user_mails_received(id):
+    u = UserService.selectByStudentnumber(app.dbs['users'], id)
+    dep = u.iddepartment
+    addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
+    db = app.dbs[codes.codes['0{}'.format(dep)]]
+    j = []
+    mails = MailService.selectByReceiverUserAdresses(
+        db,
+        [a.iduseraddress for a in addresses]
+    )
+    for m in mails:
+        j.append(get_mail_barcode(m.barcode))
+    response.content_type = 'text/json; charset=utf-8'
+    return dumps(j)
+
+
+@app.route('/mail/user/:id/all')
+def get_user_mails_all(id):
+    return get_user_mails_sent(id) + get_user_mails_received(id)
+
+
 @app.route('/mail/user/:id')
 def get_user_mails(id):
     u = UserService.selectByStudentnumber(app.dbs['users'], id)
     dep = u.iddepartment
     addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
     db = app.dbs[codes.codes['0{}'.format(dep)]]
+    j = []
     mails = MailService.selectByUserAdresses(
         db,
         [a.iduseraddress for a in addresses]
     )
-    j = []
     for m in mails:
         j.append(get_mail_barcode(m.barcode))
     response.content_type = 'text/json; charset=utf-8'
