@@ -19,7 +19,7 @@
           .col-xs-3
             %br
             %label User ID:
-            %input{"type" => "text"}
+            %input{"type" => "text", "ng-model" => "mailbox.userNumber", "ng-change" => "mailbox.updateUser()"}
             %br
             %hr
             %button{"ng-click" => "mailbox.show('All')"} All

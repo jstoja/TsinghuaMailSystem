@@ -9,22 +9,27 @@
 		mailbox.listStatus = 'All';
 		mailbox.user = {};
 
-		this.getUser = function(userNumber) {
-			$http.get('/user/' + String(userNumber+1)).success(function(data) {
+		this.getUser = function() {
+			$http.get('/user/' + String(mailbox.userNumber)).success(function(data) {
 				mailbox.user = data;
 				console.log(data);
 			});
 		};
 
 		this.getMails = function(userid) {
-			$http.get('/mail/user/' + String(userid)).success(function(data){
+			$http.get('/mail/user/' + String(mailbox.userNumber)).success(function(data){
 				mailbox.mails = data;
 				mailbox.currentMail = data[0];
 			});
 		};
 
-		this.getUser(mailbox.userNumber);
-		this.getMails(mailbox.userNumber);
+		this.updateUser = function() {
+			mailbox.getUser();
+			mailbox.getMails();
+		};
+
+		this.getUser();
+		this.getMails();
 
 		this.show = function(st) {
 			mailbox.listStatus = st;

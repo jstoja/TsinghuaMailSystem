@@ -131,7 +131,7 @@ def get_all_users():
 
 @app.route('/user/:id')
 def get_user(id):
-    user = UserService.selectById(app.dbs['users'], id)
+    user = UserService.selectByStudentnumber(app.dbs['users'], id)
     if user is None:
         return "{}"
     u = {'name': user.name, 'email': user.email,
