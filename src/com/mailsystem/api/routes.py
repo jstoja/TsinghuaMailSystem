@@ -92,8 +92,7 @@ def get_dep_mails(id):
     pass
 
 
-@app.route('/mail/user/:id/sent')
-def get_user_mails_sent(id):
+def user_mails_sent(id):
     u = UserService.selectByStudentnumber(app.dbs['users'], id)
     dep = u.iddepartment
     addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
@@ -106,11 +105,15 @@ def get_user_mails_sent(id):
     for m in mails:
         j.append(get_mail_barcode(m.barcode))
     response.content_type = 'text/json; charset=utf-8'
-    return dumps(j)
+    return j
 
 
-@app.route('/mail/user/:id/received')
-def get_user_mails_received(id):
+@app.route('/mail/user/:id/sent')
+def get_user_mails_sent(id):
+    return dumps(user_mails_sent(id))
+
+
+def user_mails_received(id):
     u = UserService.selectByStudentnumber(app.dbs['users'], id)
     dep = u.iddepartment
     addresses = UserAddressService.listByUser(app.dbs['users'], u.iduserthu)
@@ -123,12 +126,17 @@ def get_user_mails_received(id):
     for m in mails:
         j.append(get_mail_barcode(m.barcode))
     response.content_type = 'text/json; charset=utf-8'
-    return dumps(j)
+    return j
+
+
+@app.route('/mail/user/:id/received')
+def get_user_mails_received(id):
+    return dumps(user_mails_received(id))
 
 
 @app.route('/mail/user/:id/all')
 def get_user_mails_all(id):
-    return get_user_mails_sent(id) + get_user_mails_received(id)
+    return dumps(user_mails_sent(id) + user_mails_received(id))
 
 
 @app.route('/mail/user/:id')
