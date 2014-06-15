@@ -45,7 +45,12 @@ The config file is setup.json. For each department, you have to choose an uri to
 connect to the database.
 
 For mysql, it will be something like
-```"mysql+mysqlconnector://root:root@localhost:3306"```
+```
+"mysql+mysqlconnector://root:root@localhost:3306"
+```
 
-For sqlite ```"sqlite://"```
+For sqlite
+```
+"sqlite://"
+```
 
