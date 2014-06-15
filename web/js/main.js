@@ -17,7 +17,7 @@
 		};
 
 		this.getMails = function(userid) {
-			$http.get('/mail/user/' + String(mailbox.userNumber)).success(function(data){
+			$http.get('/mail/user/' + String(mailbox.userNumber) + '/all').success(function(data){
 				mailbox.mails = data;
 				mailbox.currentMail = data[0];
 			});
@@ -72,6 +72,19 @@
 				return ("Receiver: " + mail.receiver);
 			}
 
+		};
+
+		this.printStatus = function(status) {
+			switch(status) {
+				case 1:
+					return ("Deposited");
+				case 2:
+					return ("Post-Transit");
+				case 3:
+				    return("Waiting at address");
+				case 4:
+				    return("Received");
+			}
 		};
 	}]);
 })();

@@ -29,7 +29,7 @@
             <br>
             <br>
             <ul>
-              <li class='list-box' ng-repeat='mail in mailbox.getSelectedMails()'>
+              <li class='list-box' ng-repeat='mail in mailbox.getSelectedMails() | limitTo:10'>
                 <div class='box'>
                   <a ng-click='mailbox.currentMail = mail'>
                     <p>{{ mailbox.printInfoTitle(mail) }}</p>
@@ -60,17 +60,17 @@
                         {{ history.text }}
                       </div>
                       <div class='col-xs-2 col xs-offset-2'>
-                        {{ history.status }}
+                        {{ mailbox.printStatus(history.status) }}
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
               <div class='col-xs-6'>
-                <button class='btn btn-default'>Action1</button>
-                <button class='btn btn-default'>Action2</button>
-                <button class='btn btn-default'>Action3</button>
-                <button class='btn btn-default'>Action4</button>
+                <!-- /%button{"class"=>"btn btn-default"} Action1 -->
+                <!-- /%button{"class"=>"btn btn-default"} Action2 -->
+                <!-- /%button{"class"=>"btn btn-default"} Action3 -->
+                <!-- /%button{"class"=>"btn btn-default"} Action4 -->
               </div>
             </div>
           </div>
