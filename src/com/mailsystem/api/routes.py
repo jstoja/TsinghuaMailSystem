@@ -13,7 +13,6 @@ from src.com.mailsystem.services.MailService import MailService
 
 app = Bottle()
 
-
 @hook('after_request')
 def enable_cors():
     r = response
@@ -23,26 +22,23 @@ def enable_cors():
     ' Content-Type, Accept'
     r.content_type = 'text/json; charset=utf-8'
 
+@app.route('/')
+@app.route('/:filename')
+def server_web_img(filename = 'index.html'):
+    return static_file(filename, root='./web/')
 
-@app.route('/web/img/:filename')
-def server_web_img(filename):
-    return static_file(filename, root='./web/img')
-
-
-@app.route('/web/js/:filename')
+@app.route('/img/:filename')
+def server_web_img2(filename):
+    return static_file(filename, root='./web/img/')
+  
+@app.route('/js/:filename')
 def server_web_js(filename):
     return static_file(filename, root='./web/js')
-
-
-@app.route('/web/css/:filename')
+ 
+ 
+@app.route('/css/:filename')
 def server_web_css(filename):
     return static_file(filename, root='./web/css')
-
-
-@app.route('/web/:filename')
-def server_web(filename):
-    return static_file(filename, root='./web')
-
 
 @app.route('/data/:filename')
 def server_static(filename):

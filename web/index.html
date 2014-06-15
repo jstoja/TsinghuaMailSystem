@@ -15,20 +15,24 @@
           <div class='col-xs-2 col-xs-offset-1'>
             <img class='img-responsive' src='img/logo.jpg'>
           </div>
-          <div class='col-xs-3 col-xs-offset-4'>
-            <!-- /%button coucou -->
-          </div>
         </div>
         <div class='row main-ui' ng-controller='MailboxController as mailbox'>
-		<button ng-click="mailbox.getMails(mailbox.urls[0])">User1</button>
-		<button ng-click="mailbox.getMails(mailbox.urls[1])">User2</button>
           <div class='col-xs-3'>
+            <br>
+            <label>User ID:</label>
+            <input type='text'>
+            <br>
+            <hr>
+            <button ng-click="mailbox.show('All')">All</button>
+            <button ng-click="mailbox.show('Sent')">Sent</button>
+            <button ng-click="mailbox.show('Received')">Received</button>
+            <br>
+            <br>
             <ul>
-              <li class='list-box' ng-repeat='mail in mailbox.mails'>
+              <li class='list-box' ng-repeat='mail in mailbox.getSelectedMails()'>
                 <div class='box'>
                   <a ng-click='mailbox.currentMail = mail'>
-                    <!-- %p {{ mail.receiver }} -->
-                    <p>From: {{ mail.sender }}</p>
+                    <p>{{ mailbox.printInfoTitle(mail) }}</p>
                     <p>the {{ mail.date | date }}</p>
                   </a>
                 </div>
@@ -43,6 +47,7 @@
               </div>
               <div class='col-xs-3 col-xs-offset-6'>
                 <p>{{ mailbox.currentMail.date | date }}</p>
+                <p>{{ mailbox.currentMail.barcode }}</p>
               </div>
             </div>
             <div class='row'>

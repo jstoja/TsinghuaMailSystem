@@ -15,17 +15,24 @@
         .row.top-row
           .col-xs-2.col-xs-offset-1
             %img{:src => "img/logo.jpg", :class => "img-responsive"}
-          .col-xs-3.col-xs-offset-4
-            //%button coucou
         .row.main-ui{"ng-controller" => "MailboxController as mailbox"}
           .col-xs-3
+            %br
+            %label User ID:
+            %input{"type" => "text"}
+            %br
+            %hr
+            %button{"ng-click" => "mailbox.show('All')"} All
+            %button{"ng-click" => "mailbox.show('Sent')"} Sent
+            %button{"ng-click" => "mailbox.show('Received')"} Received
+            %br
+            %br
             %ul
               %li{"class"   => "list-box",
-                "ng-repeat" => "mail in mailbox.mails"}
+                "ng-repeat" => "mail in mailbox.getSelectedMails()"}
                 .box
                   %a{"ng-click"  => "mailbox.currentMail = mail"}
-                    /%p {{ mail.receiver }}
-                    %p From: {{ mail.sender }}
+                    %p {{ mailbox.printInfoTitle(mail) }}
                     %p the {{ mail.date | date }}
           .col-xs-9
             .row.head-details
@@ -34,6 +41,7 @@
                 %p Sender: {{ mailbox.currentMail.sender }}
               .col-xs-3.col-xs-offset-6
                 %p {{ mailbox.currentMail.date | date }}
+                %p {{ mailbox.currentMail.barcode }}
             .row
               .col-xs-6.history
                 History:
